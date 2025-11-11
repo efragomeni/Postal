@@ -1,0 +1,24 @@
+[
+  {
+    "titulo": "¿Cómo puedo compartir fotos con mi familia?",
+    "imagen":"../../src/assets/img/MariaUs.png",
+    "usuario": "Maria Garcia",
+    "date": "30 de Octubre de 2025",
+    "contenido": "Hola a todos, me gustaría aprender a compartir fotos con mis nietos ¿Alguien puede ayudarme?",
+    "replies": {
+      "1": "",
+      "2": ""
+    }
+  },
+  {
+    "titulo": "Actividades para mantenerse activo",
+    "imagen":"../../src/assets/img/LuisUs.png",
+    "usuario": "Luis Fernandez",
+    "date": "25 de Octubre de 2025",
+    "contenido": "¿Qué actividades recomiendan para mantenerse activo y saludable?",
+    "replies": {
+      "1": "",
+      "2": ""
+    }
+  }
+]

@@ -1,20 +1,57 @@
 .cabecera-foro-home {
-  border: 1px solid red;
-
   margin: 0 1rem 0 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: var(--principal-color);
 }
 
 .cabecera-foro-home button {
   width: 200px;
 }
 
-.contenedor-postales-foro-home{
+.contenedor-postales-foro-home {
   margin: 0 1rem 0 1rem;
-
+  color: var(--principal-color);
 }
+
+.postal {
+  margin: 1rem 2rem 1rem 2rem;
+  border: 3px solid var(--principal-color);
+  border-radius: 20px;
+
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.postal-us,
+.postal-fecha,
+.postal-replies {
+  height: 100px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 3rem;
+}
+
+.postal-us img {
+  border-radius: 50px;
+}
+
+.postal-fecha img,
+.postal-replies img {
+  height: 40px;
+}
+
+.postal-contenido {
+  font-size: 24px;
+  font-weight: bolder;
+  color: var(--principal-color);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .cabecera-foro-home {
