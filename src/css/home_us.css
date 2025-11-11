@@ -1,0 +1,23 @@
+.cabecera-foro-home {
+  border: 1px solid red;
+
+  margin: 0 1rem 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cabecera-foro-home button {
+  width: 200px;
+}
+
+.contenedor-postales-foro-home{
+  margin: 0 1rem 0 1rem;
+
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .cabecera-foro-home {
+    display: none;
+  }
+}

@@ -35,7 +35,7 @@ nav {
   border: 1px solid var(--border-btn);
   background: var(--principal-color);
   color: var(--secondary-text);
-  font-size: 1rem;
+  font-size: 1.125rem;
 
   display: flex;
   gap: 1rem;
@@ -50,6 +50,7 @@ nav {
 .contenedor-botones-nav-footer {
   display: none;
 }
+
 /* Responsive */
 @media (max-width: 768px) {
   .contenedor-botones-nav {
