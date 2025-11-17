@@ -74,9 +74,15 @@ export default function AddUserPage() {
   );
 
   //Manejar el cambio en el form
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+  //Typescript chillon ¬¬
+  // function handleChange(e: ChangeEvent<HTMLInputElement>) {
+  //   setForm({ ...form, [e.target.name]: e.target.value });
+  // }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-  }
+  };
 
   //Envio del form
   async function handleSubmit(e: FormEvent) {
@@ -187,7 +193,7 @@ export default function AddUserPage() {
             <input
               name="username"
               placeholder="Apodo"
-              value={form.username=form.name}
+              value={(form.username = form.name)}
               onChange={handleChange}
               className="border p-2 rounded"
             />
@@ -228,7 +234,7 @@ export default function AddUserPage() {
               className="border p-2 rounded"
             />
 
-             <select
+            <select
               name="provincia"
               value={form.provincia}
               onChange={handleChange}
