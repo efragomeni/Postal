@@ -14,18 +14,27 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar, User, ArrowLeft } from "lucide-react";
 
+/**Prueba para host  **/
+interface Author {
+  _id: string;
+  username: string;
+  profileImage?: string;
+}
+/**Prueba para host  **/
 interface Reply {
-  author: string;
+  // author: string;
+  author: Author | null;
   content: string;
   createdAt: string;
-  profileImage: string;
+  //profileImage: string;
 }
 
 interface Topic {
   _id: string;
   title: string;
   content: string;
-  author: string;
+  // author: string;
+  author: Author | null;
   createdAt: string;
   replies: Reply[];
 }
@@ -45,14 +54,15 @@ export default function TopicPage() {
         //console.log("Que es res?", res);
         if (!res.ok) throw new Error("Error al obtener el tema desde tema[ID]");
         const data = await res.json();
-        setTopic({
-          _id: data._id,
-          title: data.title,
-          content: data.content,
-          author: data.author,
-          createdAt: data.createdAt,
-          replies: data.replies || [],
-        });
+        setTopic(data)
+        // setTopic({
+        //   _id: data._id,
+        //   title: data.title,
+        //   content: data.content,
+        //   author: data.author,
+        //   createdAt: data.createdAt,
+        //   replies: data.replies || [],
+        // });
       } catch (error) {
         console.log(error);
       }
