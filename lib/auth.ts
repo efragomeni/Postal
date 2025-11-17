@@ -17,6 +17,7 @@ export const authOptions: NextAuthOptions = {
       //Autorizo o no dependiendo mis reglas.
       async authorize(credentials) {
         try {
+          if (!credentials) return null;
           const { dni, password } = credentials;
 
           if (!dni || !password) return null;
