@@ -1,10 +1,8 @@
 "use client";
 
 import type React from "react";
-
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Navbar } from "@/components/navbar";
 import {
   Card,
   CardContent,
@@ -15,13 +13,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar, User, ArrowLeft } from "lucide-react";
-// import { isAuthenticated, getCurrentUser } from "@/lib/auth";
-// import { getTopic, addReply, formatDate, type Topic } from "@/lib/forum-data";
 
 interface Reply {
   author: string;
   content: string;
   createdAt: string;
+  profileImage: string;
 }
 
 interface Topic {
@@ -42,11 +39,10 @@ export default function TopicPage() {
   useEffect(() => {
     async function fetchTopic() {
       try {
-        // const res = await fetch(`/api/topics/${params.id}`);
         const id = Array.isArray(params.id) ? params.id[0] : params.id;
-        console.log("Id desde TEMA", id);
+        //console.log("Id desde TEMA", id);
         const res = await fetch(`/api/topics/${id}`);
-        console.log("Que es res?", res);
+        //console.log("Que es res?", res);
         if (!res.ok) throw new Error("Error al obtener el tema desde tema[ID]");
         const data = await res.json();
         setTopic({
@@ -74,7 +70,7 @@ export default function TopicPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          author: "Usuario demo", // ⚠️ Luego reemplazás con el user real del session
+          author: "Usuario demo",
           content: replyContent,
         }),
       });
@@ -100,7 +96,7 @@ export default function TopicPage() {
   if (!topic)
     return (
       <div className="min-h-screen bg-secondary">
-        <Navbar />
+        {/* <Navbar /> */}
         <main className="container mx-auto px-4 py-8">
           <Card>
             <CardContent className="py-12 text-center">
@@ -123,7 +119,6 @@ export default function TopicPage() {
 
   return (
     <div className="min-h-screen bg-secondary">
-      <Navbar />
       <main className="container mx-auto px-4 py-8">
         <Button
           variant="outline"
@@ -141,17 +136,30 @@ export default function TopicPage() {
             <CardTitle className="text-3xl md:text-4xl mb-4">
               {topic.title}
             </CardTitle>
+
             <CardDescription className="text-base md:text-lg space-y-2">
               <div className="flex items-center gap-2">
-                <User className="w-5 h-5" />
-                <span>Por {topic.author}</span>
+                {topic.author?.profileImage ? (
+                  <img
+                    src={topic.author.profileImage}
+                    alt={topic.author.username}
+                    className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                  />
+                ) : (
+                  <User className="w-10 h-10 text-gray-500" />
+                )}
+                <span className="font-medium">
+                  {topic.author?.username || "Usuario desconocido"}
+                </span>
               </div>
+
               <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5" />
                 <span>{formatDate(topic.createdAt)}</span>
               </div>
             </CardDescription>
           </CardHeader>
+
           <CardContent>
             <p className="text-lg md:text-xl leading-relaxed">
               {topic.content}
@@ -179,8 +187,14 @@ export default function TopicPage() {
                   <CardHeader>
                     <CardDescription className="text-base md:text-lg space-y-2">
                       <div className="flex items-center gap-2">
-                        <User className="w-5 h-5" />
-                        <span className="font-semibold">{reply.author}</span>
+                        <img
+                          src={reply.author?.profileImage}
+                          className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                        />
+
+                        <span className="font-semibold">
+                          {reply.author?.username || "Desconocido"}
+                        </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Calendar className="w-5 h-5" />
@@ -221,9 +235,10 @@ export default function TopicPage() {
                 />
               </div>
               <Button
+                variant="secondary"
                 type="submit"
                 size="lg"
-                className="h-14 text-xl font-semibold w-full md:w-auto"
+                className="h-14 text-xl font-semibold mx-auto block"
               >
                 Publicar Respuesta
               </Button>

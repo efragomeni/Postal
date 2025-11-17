@@ -1,7 +1,9 @@
 import mongoose, { Schema, models } from "mongoose";
 
 const ReplySchema = new Schema({
-  author: { type: String, required: true },
+  // author: { type: String, required: true },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  // profileImage: { type: String },
   content: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
@@ -9,9 +11,12 @@ const ReplySchema = new Schema({
 const TopicSchema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
-  // Podrías guardar el userId también si luego querés vincular usuarios
 
-  author: { type: String, required: true },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  profileImage: { type: String },
+  // normal | birthday
+  type: { type: String, default: "normal" },
+
   createdAt: { type: Date, default: Date.now },
   // subdocumentos para las respuestas
   replies: [ReplySchema],

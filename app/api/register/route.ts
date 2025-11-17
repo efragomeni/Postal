@@ -1,3 +1,4 @@
+//Este archivo solo servia cuando era FORO pero me da miedo borrarlo y que explote todo...
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/db";

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Navbar } from "@/components/navbar";
 import {
   Card,
   CardContent,
@@ -23,6 +22,7 @@ export default function CreateTopicPage() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("Se activo el envio");
     e.preventDefault();
     setError("");
 
@@ -45,21 +45,21 @@ export default function CreateTopicPage() {
       });
 
       if (!res.ok) {
-        throw new Error("Error al crear el tema");
+        throw new Error("Error al crear la postal");
       }
 
       const data = await res.json();
-       let tries = 0;
-       while (tries < 5) {
-      const check = await fetch(`/api/topics/${data._id}`);
-         if (check.ok) break;
-         await new Promise((res) => setTimeout(res, 300));
-         tries++;
-       }
-      // router.push(`/tema/${data._id}`);
+      let tries = 0;
+      while (tries < 5) {
+        const check = await fetch(`/api/topics/${data._id}`);
+        if (check.ok) break;
+        await new Promise((res) => setTimeout(res, 300));
+        tries++;
+      }
+      router.push(`/tema/${data._id}`);
     } catch (err) {
       console.error(err);
-      setError("No se pudo crear el tema. Intente de nuevo.");
+      setError("No se pudo crear la postal. Intente de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -67,9 +67,7 @@ export default function CreateTopicPage() {
 
   return (
     <div className="min-h-screen bg-secondary">
-      <Navbar />
-
-      <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-8">
         <Button
           variant="outline"
           size="lg"
@@ -83,7 +81,7 @@ export default function CreateTopicPage() {
         <Card className="max-w-3xl mx-auto">
           <CardHeader>
             <CardTitle className="text-3xl md:text-4xl">
-              Crear Nuevo Tema
+              Crear Nueva Postal
             </CardTitle>
             <CardDescription className="text-lg">
               Comparte tus ideas con la comunidad
@@ -93,7 +91,7 @@ export default function CreateTopicPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-3">
                 <label htmlFor="title" className="text-lg font-medium block">
-                  Título del tema
+                  Título de la postal
                 </label>
                 <Input
                   id="title"
@@ -101,20 +99,20 @@ export default function CreateTopicPage() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="h-14 text-lg text-[#FFF]"
-                  placeholder="Escribe un título claro y descriptivo"
+                  placeholder="Escribe un título claro y descriptivo (obligatorio)"
                 />
               </div>
 
               <div className="space-y-3">
                 <label htmlFor="content" className="text-lg font-medium block">
-                  Contenido
+                  Descripción de la postal
                 </label>
                 <Textarea
                   id="content"
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  className="text-[#FFF] min-h-48 text-lg resize-none"
-                  placeholder="Describe tu tema con detalle..."
+                  className="color-[var(--color-principal)] min-h-48 text-lg resize-none"
+                  placeholder="Describe tu tema con detalle...(obligatorio)"
                 />
               </div>
 
@@ -126,21 +124,13 @@ export default function CreateTopicPage() {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
+                  variant="secondary"
                   type="submit"
-                  size="lg"
+                  size="sm"
                   disabled={loading}
                   className="h-14 text-xl font-semibold flex-1"
                 >
-                  {loading ? "Publicando..." : "Publicar Tema"}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="lg"
-                  onClick={() => router.push("/")}
-                  className="text-[#FFF] h-14 text-xl font-semibold flex-1"
-                >
-                  Cancelar
+                  {loading ? "Publicando..." : "Publicar"}
                 </Button>
               </div>
             </form>

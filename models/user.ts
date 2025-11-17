@@ -1,15 +1,31 @@
-import mongoose, { Schema, models } from "mongoose";
+import mongoose from "mongoose";
 
-const UserSchema = new Schema({
-  username: { type: String, required: true },
+const UserSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    lastname: { type: String, required: true },
+    username: { type: String, required: true, unique: false },
+    dni: { type: String, required: true, unique: true },
+    email: { type: String, required: false, unique: true, sparse: true },
+    password: { type: String, required: true },
+    role: { type: String, default: "user" },
+    profileImage: { type: String, default: "/default.jpg" },
 
-  email: { type: String, unique: true, required: true },
-  password: { type: String, required: true, select: false },
-  // El select false del pass hace que no se devuelva por defecto en las consultas el pass.
-  role: { type: String, default: "user" },
-});
+    // Fecha de nacimiento
+    fecnac: { type: Date },
 
-// Evita volver a compilar el modelo en hot reload
-const User = models.User || mongoose.model("User", UserSchema);
+    // Última vez que se generó automáticamente un post de cumpleaños
+    lastBirthdayPost: { type: Date, default: null },
 
-export default User;
+    //Comprar si primera sesion
+    mustChangePassword: { type: Boolean, default: true },
+
+
+    institucion: { type: String },
+    provincia: { type: String },
+  },
+  { timestamps: true }
+);
+
+export default mongoose.models.User || mongoose.model("User", UserSchema);
+
