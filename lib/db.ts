@@ -18,6 +18,11 @@ if (!cached) {
   cached = global._mongooseConnection = { conn: null, promise: null };
 }
 
+const dbCache = cached as {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+};
+
 let cronStarted = false;
 
 export async function connectDB() {
@@ -26,12 +31,12 @@ export async function connectDB() {
     cronStarted = true;
   }
 
-  if (cached.conn) return cached.conn;
+  if (dbCache.conn) return dbCache.conn;
 
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => mongoose);
+  if (!dbCache.promise) {
+    dbCache.promise = mongoose.connect(MONGODB_URI).then((mongoose) => mongoose);
   }
 
-  cached.conn = await cached.promise;
-  return cached.conn;
+  dbCache.conn = await dbCache.promise;
+  return dbCache.conn;
 }
