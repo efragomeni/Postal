@@ -21,7 +21,7 @@ export function startBirthdayCron() {
 
     //Obtenemos todos los usuarios.
     const users = await User.find();
-//Recorremos los users
+    //Recorremos los users
     for (const user of users) {
       //Si hay alguno sin fecha (porque quedo de lo viejo) lo saltea
       if (!user.fecnac) continue;
