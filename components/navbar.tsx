@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { LogOut, Home, Plus, User, Bell, Trash } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState, useRef } from "react";
+import { UserSearch } from "@/components/UserSearch";
 
 export function Navbar() {
   const router = useRouter();
@@ -75,12 +76,21 @@ useEffect(() => {
 
   return (
     <nav className="bg-primary text-primary-foreground shadow-sm">
-      <div className="container mx-auto px-4 py-4 flex flex-col items-center md:flex-row md:justify-between md:items-center">
-        <div className="cursor-pointer mb-3 md:mb-0" onClick={() => router.push(isAdmin ? "/admin" : "/")}>
-          <img className="h-20 mx-auto" src="/img/Postal.svg" alt="Logo Postal" />
+      <div className="container mx-auto px-4 py-4 flex flex-col items-center md:flex-row md:justify-between md:items-center gap-3">
+        <div className="cursor-pointer" onClick={() => router.push(isAdmin ? "/admin" : "/")}>
+          <img className="h-16 mx-auto" src="/img/Postal.svg" alt="Logo Postal" />
         </div>
 
-        <div className="hidden md:flex items-center gap-7">
+        {/* Búsqueda visible en móvil */}
+        {!isAdmin && (
+          <div className="flex w-full max-w-xs">
+            <UserSearch />
+          </div>
+        )}
+
+        <div className="md:flex items-center gap-7">
+          {/* Búsqueda en desktop */}
+          {!isAdmin && <UserSearch />}
           <Button
             variant="secondary"
             size="lg"
