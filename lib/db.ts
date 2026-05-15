@@ -1,11 +1,6 @@
 import mongoose from "mongoose";
 import { startBirthdayCron } from "./birthdayCron";
 
-const MONGODB_URI = process.env.MONGODB_URI!;
-if (!MONGODB_URI) {
-  throw new Error("Por favor define MONGODB_URI en .env.local");
-}
-
 declare global {
   // eslint-disable-next-line no-var
   var _mongooseConnection:
@@ -26,6 +21,11 @@ const dbCache = cached as {
 let cronStarted = false;
 
 export async function connectDB() {
+  const MONGODB_URI = process.env.MONGODB_URI;
+  if (!MONGODB_URI) {
+    throw new Error("Por favor define MONGODB_URI en .env.local");
+  }
+
   if (!cronStarted) {
     startBirthdayCron();
     cronStarted = true;
@@ -34,7 +34,7 @@ export async function connectDB() {
   if (dbCache.conn) return dbCache.conn;
 
   if (!dbCache.promise) {
-    dbCache.promise = mongoose.connect(MONGODB_URI).then((mongoose) => mongoose);
+    dbCache.promise = mongoose.connect(MONGODB_URI).then((m) => m);
   }
 
   dbCache.conn = await dbCache.promise;

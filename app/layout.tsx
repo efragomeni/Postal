@@ -4,6 +4,10 @@ import "./globals.css";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import { Navbar } from "@/components/navbar";
 import { BottomNav } from "@/components/BottomNav";
+import { ChatProvider } from "@/components/ChatContext";
+import { ChatWindow } from "@/components/ChatWindow";
+import { ChatUrlHandler } from "@/components/ChatUrlHandler";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,14 +35,24 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
       >
         <SessionProviderWrapper>
-          {/* Navbar superior visible en escritorio */}
-          <Navbar />
+          <ChatProvider>
+            {/* Navbar superior visible en escritorio */}
+            <Navbar />
 
-          {/* Contenido de cada página */}
-          <main className="pb-16">{children}</main>
+            {/* Contenido de cada página */}
+            <main className="pb-16">{children}</main>
 
-          {/* Barra inferior visible solo en móvil */}
-          <BottomNav />
+            {/* Barra inferior visible solo en móvil */}
+            <BottomNav />
+
+            {/* Chat popup global (bottom-right) */}
+            <ChatWindow />
+
+            {/* Handler para abrir chat desde notificaciones (?openChat=id) */}
+            <Suspense fallback={null}>
+              <ChatUrlHandler />
+            </Suspense>
+          </ChatProvider>
         </SessionProviderWrapper>
       </body>
     </html>
