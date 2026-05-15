@@ -73,23 +73,24 @@ export function UserSearch() {
   };
 
   return (
-    <div ref={containerRef} className="relative">
+    // No me convence el w-full me queda raro en mobile. 
+    <div ref={containerRef} className="relative w-full md:w-auto"> 
       {/* Input */}
-      <div className="flex items-center gap-2 bg-black/10 border border-white/20 rounded-full px-3 py-1.5 focus-within:border-white/60 focus-within:bg-white/20 transition">
-        <Search size={14} className="text-white/60 shrink-0" />
+      <div className="flex items-center gap-2 bg-white border border-[#0f2e59] rounded-full px-3 py-2 focus-within:border-[#0f2e59] transition">
+        <Search size={16} className="text-[#0f2e59] shrink-0" />
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar usuario..."
-          className="bg-transparent text-white placeholder:text-white/50 text-sm outline-none w-32 lg:w-44"
+          className="bg-transparent text-[#0f2e59] placeholder:text-[#0f2e59]/70 text-base font-semibold outline-none w-36 lg:w-52"
         />
         {query && (
           <button
             onClick={clearSearch}
-            className="text-white/60 hover:text-white transition shrink-0"
+            className="text-[#0f2e59] hover:text-[#0f2e59]/70 transition shrink-0"
           >
-            <X size={13} />
+            <X size={14} />
           </button>
         )}
       </div>

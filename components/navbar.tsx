@@ -12,7 +12,7 @@ export function Navbar() {
   const { data: session } = useSession();
   const user = session?.user;
 
-  const dropdownRef=useRef<HTMLDivElement>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const [notifications, setNotifications] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
@@ -57,40 +57,50 @@ export function Navbar() {
   }, [open]);
 
   // efecto para cerrar dropdown al hacer click fuera
-useEffect(() => {
-  function handleClickOutside(event: MouseEvent) {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-      setOpen(false);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
     }
-  }
 
-  document.addEventListener("mousedown", handleClickOutside);
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [dropdownRef]);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
 
   if (!user) return null;
   const isAdmin = user.role === "admin";
   const hasUnread = notifications.some((n) => !n.read);
 
   return (
-    <nav className="bg-primary text-primary-foreground shadow-sm">
+    <nav className="bg-primary text-primary-foreground shadow-sm w-full">
       <div className="container mx-auto px-4 py-4 flex flex-col items-center md:flex-row md:justify-between md:items-center gap-3">
-        <div className="cursor-pointer" onClick={() => router.push(isAdmin ? "/admin" : "/")}>
-          <img className="h-16 mx-auto" src="/img/Postal.svg" alt="Logo Postal" />
+        {/* Logo postal */}
+        <div
+          className="cursor-pointer"
+          onClick={() => router.push(isAdmin ? "/admin" : "/")}
+        >
+          <img
+            className="h-16 mx-auto"
+            src="/img/Postal.svg"
+            alt="Logo Postal"
+          />
         </div>
 
         {/* Búsqueda visible en móvil */}
-        {!isAdmin && (
+        {/*!isAdmin && (
           <div className="flex w-full max-w-xs">
             <UserSearch />
           </div>
-        )}
-
-        <div className="md:flex items-center gap-7">
-          {/* Búsqueda en desktop */}
-          {!isAdmin && <UserSearch />}
+        )*/}
+        {/* Búsqueda en desktop */}
+        {!isAdmin && <UserSearch />}
+        <div className="md:flex items-center gap-7 hidden">
           <Button
             variant="secondary"
             size="lg"
@@ -149,7 +159,9 @@ useEffect(() => {
                   aria-label="Notificaciones"
                 >
                   {notifications.length === 0 ? (
-                    <p className="text-sm text-gray-500">No tenés notificaciones</p>
+                    <p className="text-sm text-gray-500">
+                      No tenés notificaciones
+                    </p>
                   ) : (
                     notifications.map((n: any) => (
                       <div
