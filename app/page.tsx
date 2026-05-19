@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Calendar, User } from "lucide-react";
+import { MessageSquare, Calendar, User, Gamepad2 } from "lucide-react";
 
 interface Reply {
   author: string;
@@ -110,7 +110,15 @@ export default function Home() {
               Explora las conversaciones de la comunidad
             </h3>
           </div>
-          <div className="shrink-0">
+          <div className="shrink-0 flex gap-2">
+            <Button
+              onClick={() => router.push("/juego-del-dia")}
+              className="h-10 sm:h-12 text-sm sm:text-base md:text-lg gap-2 cursor-pointer bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 border-0 text-white shadow-md hover:shadow-lg transition-all"
+            >
+              <Gamepad2 className="w-5 h-5" />
+              <span className="hidden sm:inline">Juego del día</span>
+              <span className="sm:hidden">Jugar</span>
+            </Button>
             <Button
               variant="secondary"
               size="lg"
