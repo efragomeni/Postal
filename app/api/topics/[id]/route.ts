@@ -72,3 +72,74 @@ export async function POST(
 
   return NextResponse.json(updated);
 }
+
+/*.*.*.* DELETE *.*.*.*/
+export async function DELETE(
+  req: Request,
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params;
+
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  }
+
+  await connectDB();
+  const topic = await Topic.findById(id);
+  if (!topic)
+    return NextResponse.json({ error: "Tema no encontrado" }, { status: 404 });
+
+  if (String(topic.author) !== String(session.user.id) && session.user.role !== "admin") {
+    return NextResponse.json({ error: "No tenés permiso" }, { status: 403 });
+  }
+
+  await Topic.findByIdAndDelete(id);
+  return NextResponse.json({ message: "Postal eliminada" }, { status: 200 });
+}
+
+/*.*.*.* PATCH *.*.*.*/
+export async function PATCH(
+  req: Request,
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params;
+
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  }
+
+  await connectDB();
+  const topic = await Topic.findById(id);
+  if (!topic)
+    return NextResponse.json({ error: "Tema no encontrado" }, { status: 404 });
+
+  if (String(topic.author) !== String(session.user.id)) {
+    return NextResponse.json({ error: "No tenés permiso" }, { status: 403 });
+  }
+
+  if (topic.replies && topic.replies.length > 0) {
+    return NextResponse.json(
+      { error: "No se puede editar una postal con respuestas" },
+      { status: 400 }
+    );
+  }
+
+  if (topic.type === "birthday") {
+    return NextResponse.json(
+      { error: "No se pueden editar las postales automáticas de cumpleaños" },
+      { status: 400 }
+    );
+  }
+
+  const { title, content, images } = await req.json();
+
+  topic.title = title ?? topic.title;
+  topic.content = content ?? topic.content;
+  topic.images = Array.isArray(images) ? images : topic.images;
+
+  await topic.save();
+
+  return NextResponse.json(topic, { status: 200 });
+}

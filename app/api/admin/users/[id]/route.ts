@@ -27,3 +27,29 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
 
   return NextResponse.json(user);
 }
+
+export async function PUT(req: Request, context: { params: Promise<{ id: string }> }) {
+  const { params } = context;
+  const { id } = await params;
+
+  const session = await getServerSession(authOptions);
+  if (session?.user?.role !== "admin") {
+    return NextResponse.json({ message: "No autorizado" }, { status: 403 });
+  }
+
+  await connectDB();
+
+  const { name, lastname, username, dni, email, fecnac, institucion, provincia } = await req.json();
+
+  const updated = await User.findByIdAndUpdate(
+    id,
+    { name, lastname, username, dni, email, fecnac, institucion, provincia },
+    { new: true }
+  ).select("-password");
+
+  if (!updated) {
+    return NextResponse.json({ message: "Usuario no encontrado" }, { status: 404 });
+  }
+
+  return NextResponse.json({ message: "Usuario actualizado", user: updated });
+}

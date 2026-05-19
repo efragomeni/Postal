@@ -28,6 +28,8 @@ interface Topic {
   createdAt: string;
   replies: Reply[];
   provincia: string; //probando
+  reported?: boolean;
+  reportedBy?: string[];
 }
 
 export default function Home() {

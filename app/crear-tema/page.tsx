@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ImagePlus, X } from "lucide-react";
 
 export default function CreateTopicPage() {
   const router = useRouter();
@@ -20,6 +20,63 @@ export default function CreateTopicPage() {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [imagesFiles, setImagesFiles] = useState<File[]>([]);
+  const [imagesPreviews, setImagesPreviews] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    // Limitar a 3 imagenes total
+    const totalCurrent = imagesFiles.length;
+    const availableSlots = 3 - totalCurrent;
+    const filesToAdd = files.slice(0, availableSlots);
+
+    if (filesToAdd.length < files.length) {
+      setError("Solo podés subir un máximo de 3 imágenes.");
+    }
+
+    const newFiles = [...imagesFiles, ...filesToAdd];
+    setImagesFiles(newFiles);
+
+    const newPreviews = filesToAdd.map((file) => URL.createObjectURL(file));
+    setImagesPreviews([...imagesPreviews, ...newPreviews]);
+    
+    // Limpiar el input
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const removeImage = (index: number) => {
+    const updatedFiles = [...imagesFiles];
+    updatedFiles.splice(index, 1);
+    setImagesFiles(updatedFiles);
+
+    const updatedPreviews = [...imagesPreviews];
+    URL.revokeObjectURL(updatedPreviews[index]); // Limpiar memoria
+    updatedPreviews.splice(index, 1);
+    setImagesPreviews(updatedPreviews);
+  };
+
+  async function uploadImage(file: File): Promise<string> {
+    const signRes = await fetch("/api/upload/sign");
+    const { timestamp, signature, apiKey, cloudName } = await signRes.json();
+
+    const form = new FormData();
+    form.append("file", file);
+    form.append("api_key", apiKey);
+    form.append("timestamp", timestamp);
+    form.append("signature", signature);
+
+    const uploadRes = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      { method: "POST", body: form }
+    );
+
+    const data = await uploadRes.json();
+    return data.secure_url;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     console.log("Se activo el envio");
@@ -34,12 +91,19 @@ export default function CreateTopicPage() {
     try {
       setLoading(true);
 
+      // Subir imágenes si hay
+      let uploadedUrls: string[] = [];
+      if (imagesFiles.length > 0) {
+        uploadedUrls = await Promise.all(imagesFiles.map((file) => uploadImage(file)));
+      }
+
       const res = await fetch("/api/topics", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
           content,
+          images: uploadedUrls,
           author: "Usuario",
         }),
       });
@@ -114,6 +178,54 @@ export default function CreateTopicPage() {
                   className="color-[var(--color-principal)] min-h-48 text-lg resize-none"
                   placeholder="Describe tu tema con detalle...(obligatorio)"
                 />
+              </div>
+
+              <div className="space-y-3">
+                <label className="text-lg font-medium block">
+                  Imágenes adjuntas (máximo 3)
+                </label>
+                
+                <div className="flex gap-4 items-end">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={imagesFiles.length >= 3}
+                    className="h-14 gap-2 cursor-pointer"
+                  >
+                    <ImagePlus className="w-5 h-5" />
+                    Añadir imagen
+                  </Button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    ref={fileInputRef}
+                    onChange={handleImageSelect}
+                    className="hidden"
+                  />
+                </div>
+
+                {imagesPreviews.length > 0 && (
+                  <div className="flex flex-wrap gap-4 mt-4">
+                    {imagesPreviews.map((preview, i) => (
+                      <div key={i} className="relative w-32 h-32">
+                        <img
+                          src={preview}
+                          alt="preview"
+                          className="w-full h-full object-cover rounded-md border border-gray-200"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(i)}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition cursor-pointer"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {error && (

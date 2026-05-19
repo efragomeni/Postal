@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Search, X } from "lucide-react";
+import { Search, X, MessageCircle } from "lucide-react";
 import { useChat } from "./ChatContext";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 interface UserResult {
   _id: string;
@@ -109,10 +110,32 @@ export function UserSearch() {
           ) : (
             <ul>
               {results.map((user) => (
-                <li key={user._id}>
+                <li key={user._id} className="border-b border-gray-50 last:border-0 hover:bg-slate-50 transition flex items-center justify-between px-4 py-3">
+                  {/* Navega a las postales del usuario */}
+                  <Link
+                    href={`/postales-de/${user._id}`}
+                    onClick={clearSearch}
+                    className="flex items-center gap-3 min-w-0 flex-1 group cursor-pointer"
+                  >
+                    <img
+                      src={user.profileImage || "/default.jpg"}
+                      alt={user.name}
+                      className="w-9 h-9 rounded-full object-cover shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-gray-800 truncate group-hover:underline">
+                        {user.name} {user.lastname}
+                      </p>
+                      <p className="text-xs text-gray-400 group-hover:underline">
+                        @{user.username}
+                      </p>
+                    </div>
+                  </Link>
+                  
+                  {/* Botón para iniciar chat */}
                   <button
-                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition text-left border-b border-gray-50 last:border-0"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       openChat({
                         id: user._id,
                         name: user.name,
@@ -121,20 +144,11 @@ export function UserSearch() {
                       });
                       clearSearch();
                     }}
+                    title="Enviar mensaje"
+                    className="shrink-0 ml-3 flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition cursor-pointer font-medium text-xs border border-primary/20"
                   >
-                    <img
-                      src={user.profileImage || "/default.jpg"}
-                      alt={user.name}
-                      className="w-9 h-9 rounded-full object-cover shrink-0"
-                    />
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold text-gray-800 truncate">
-                        {user.name} {user.lastname}
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        @{user.username}
-                      </p>
-                    </div>
+                    <MessageCircle className="w-4 h-4" />
+                    Chat
                   </button>
                 </li>
               ))}

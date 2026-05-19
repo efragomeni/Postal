@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { LogOut, Home, Plus, User, Bell, Trash } from "lucide-react";
+import { LogOut, Home, Plus, User, Bell, Trash, LayoutList } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState, useRef } from "react";
 import { UserSearch } from "@/components/UserSearch";
@@ -16,6 +16,9 @@ export function Navbar() {
 
   const [notifications, setNotifications] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
+  const [adminNotifs, setAdminNotifs] = useState<any[]>([]);
+  const [adminOpen, setAdminOpen] = useState(false);
+  const adminDropdownRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/login" });
@@ -49,12 +52,38 @@ export function Navbar() {
     return () => clearInterval(interval);
   }, [user]);
 
-  // Marcar como leídas al abrir el dropdown
+  // Cargar notificaciones admin (denuncias)
+  useEffect(() => {
+    if (!user || user.role !== "admin") return;
+
+    const loadAdmin = async () => {
+      try {
+        const res = await fetch("/api/admin/notifications");
+        const data = await res.json();
+        setAdminNotifs(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadAdmin();
+    const interval = setInterval(loadAdmin, 60000);
+    return () => clearInterval(interval);
+  }, [user]);
+
+  // Marcar como leídas al abrir el dropdown de usuario
   useEffect(() => {
     if (open) {
       fetch("/api/notifications", { method: "PATCH" }).catch(console.error);
     }
   }, [open]);
+
+  // Marcar como leídas al abrir el dropdown de admin
+  useEffect(() => {
+    if (adminOpen) {
+      fetch("/api/admin/notifications", { method: "PATCH" }).catch(console.error);
+    }
+  }, [adminOpen]);
 
   // efecto para cerrar dropdown al hacer click fuera
   useEffect(() => {
@@ -64,6 +93,12 @@ export function Navbar() {
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setOpen(false);
+      }
+      if (
+        adminDropdownRef.current &&
+        !adminDropdownRef.current.contains(event.target as Node)
+      ) {
+        setAdminOpen(false);
       }
     }
 
@@ -76,6 +111,7 @@ export function Navbar() {
   if (!user) return null;
   const isAdmin = user.role === "admin";
   const hasUnread = notifications.some((n) => !n.read);
+  const hasAdminUnread = adminNotifs.some((n) => !n.read);
 
   return (
     <nav className="bg-primary text-primary-foreground shadow-sm w-full">
@@ -133,6 +169,69 @@ export function Navbar() {
             </Button>
           )}
 
+          {/* Botones solo para admin */}
+          {isAdmin && (
+            <>
+              {/* Ver todas las postales */}
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() => router.push("/admin/postales")}
+                className="h-12 text-base md:text-lg gap-2 cursor-pointer"
+              >
+                <LayoutList className="w-5 h-5" />
+                Ver postales
+              </Button>
+
+              {/* Avisos admin (denuncias) */}
+              <div className="relative" ref={adminDropdownRef}>
+                <Button
+                  variant={hasAdminUnread ? "destructive" : "secondary"}
+                  size="lg"
+                  onClick={() => setAdminOpen((s) => !s)}
+                  className="h-12 text-base md:text-lg gap-2 flex items-center cursor-pointer"
+                >
+                  <span className="hidden sm:inline">Avisos</span>
+                  <Bell className="w-5 h-5" />
+                  {hasAdminUnread && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full animate-pulse pointer-events-none">
+                      {adminNotifs.filter((n) => !n.read).length}
+                    </span>
+                  )}
+                </Button>
+
+                {adminOpen && (
+                  <div className="absolute right-0 mt-2 w-80 bg-white shadow-xl rounded-lg p-3 space-y-2 z-50">
+                    {adminNotifs.length === 0 ? (
+                      <p className="text-sm text-gray-500">No hay denuncias</p>
+                    ) : (
+                      adminNotifs.map((n: any) => (
+                        <div
+                          key={n._id}
+                          className={`p-2 rounded flex justify-between items-start cursor-pointer ${
+                            n.read ? "bg-gray-100" : "bg-orange-100"
+                          }`}
+                          onClick={() => {
+                            setAdminOpen(false);
+                            router.push(n.link);
+                          }}
+                        >
+                          <div className="flex-1 pr-2">
+                            <p className="text-sm">{n.message}</p>
+                            <span className="text-xs text-gray-500">
+                              {new Date(n.createdAt).toLocaleString("es-AR")}
+                            </span>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* Bell para usuarios normales */}
           {!isAdmin && (
             <div className="relative" ref={dropdownRef}>
               <Button

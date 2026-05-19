@@ -36,8 +36,8 @@ export async function POST(req: Request) {
 
     await connectDB();
 
-    const { title, content } = await req.json();
-    console.log("Datos recibidos:", { title, content });
+    const { title, content, images } = await req.json();
+    console.log("Datos recibidos:", { title, content, images });
 
     const user = await User.findById(session.user.id);
     if (!user)
@@ -49,6 +49,7 @@ export async function POST(req: Request) {
     const newTopic = new Topic({
       title,
       content,
+      images: Array.isArray(images) ? images : [],
       author: user._id,
       profileimage:user.profileImage,
     });
