@@ -41,15 +41,39 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
 
   const { name, lastname, username, dni, email, fecnac, institucion, provincia } = await req.json();
 
-  const updated = await User.findByIdAndUpdate(
-    id,
-    { name, lastname, username, dni, email, fecnac, institucion, provincia },
-    { new: true }
-  ).select("-password");
+  const updateData: any = { name, lastname, username, dni, institucion, provincia };
 
-  if (!updated) {
-    return NextResponse.json({ message: "Usuario no encontrado" }, { status: 404 });
+  // Manejar el email vacío para que no rompa el unique:true (sparse)
+  if (email && email.trim() !== "") {
+    updateData.email = email.trim();
+  } else {
+    updateData.$unset = { email: 1 };
   }
 
-  return NextResponse.json({ message: "Usuario actualizado", user: updated });
+  // Manejar fecnac vacío
+  if (fecnac && fecnac.trim() !== "") {
+    updateData.fecnac = fecnac;
+  } else {
+    updateData.$unset = { ...updateData.$unset, fecnac: 1 };
+  }
+
+  try {
+    const updated = await User.findByIdAndUpdate(
+      id,
+      updateData,
+      { new: true }
+    ).select("-password");
+
+    if (!updated) {
+      return NextResponse.json({ message: "Usuario no encontrado" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "Usuario actualizado", user: updated });
+  } catch (error: any) {
+    console.error("Error actualizando usuario:", error);
+    if (error.code === 11000) {
+      return NextResponse.json({ message: "El DNI o Email ya está en uso por otro usuario" }, { status: 400 });
+    }
+    return NextResponse.json({ message: "Error interno del servidor" }, { status: 500 });
+  }
 }
