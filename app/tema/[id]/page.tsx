@@ -388,7 +388,7 @@ export default function TopicPage() {
                 variant="secondary"
                 type="submit"
                 size="lg"
-                className="h-14 text-xl font-semibold mx-auto block"
+                className="h-14 text-xl font-semibold mx-auto block cursor-pointer"
               >
                 Publicar Respuesta
               </Button>
