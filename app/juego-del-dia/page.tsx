@@ -42,7 +42,7 @@ export default function JuegoDelDiaPage() {
           variant="outline"
           size="lg"
           onClick={() => router.push("/")}
-          className="mb-6 h-12 text-base md:text-lg gap-2"
+          className="mb-6 h-12 text-base md:text-lg gap-2 cursor-pointer"
         >
           <ArrowLeft className="w-5 h-5" />
           Volver al Inicio

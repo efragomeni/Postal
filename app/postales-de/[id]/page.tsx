@@ -83,7 +83,7 @@ export default function PostalesDeUsuario() {
           variant="outline"
           size="lg"
           onClick={() => router.back()}
-          className="mb-6 h-12 text-base md:text-lg gap-2"
+          className="mb-6 h-12 text-base md:text-lg gap-2 cursor-pointer"
         >
           <ArrowLeft className="w-5 h-5" />
           Volver
@@ -100,7 +100,7 @@ export default function PostalesDeUsuario() {
           )}
           <h1 className="text-3xl font-bold text-foreground">
             Postales de{" "}
-            <span className="text-primary">
+            <span className="text-color-principal">
               {userInfo ? `${userInfo.name} ${userInfo.lastname}` : "…"}
             </span>
           </h1>

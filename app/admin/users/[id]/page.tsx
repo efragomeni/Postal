@@ -8,10 +8,29 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, RotateCcw, Save } from "lucide-react";
 
 const PROVINCIAS = [
-  "Buenos Aires", "Córdoba", "Santa Fe", "Mendoza", "Tucumán", "Salta",
-  "Entre Ríos", "Misiones", "Chaco", "Formosa", "Jujuy", "Río Negro",
-  "Neuquén", "Chubut", "San Juan", "San Luis", "La Pampa", "La Rioja",
-  "Catamarca", "Santiago del Estero", "Corrientes", "Tierra del Fuego",
+  "Buenos Aires",
+  "CABA",
+  "Catamarca",
+  "Chaco",
+  "Chubut",
+  "Córdoba",
+  "Corrientes",
+  "Entre Ríos",
+  "Formosa",
+  "Jujuy",
+  "La Pampa",
+  "La Rioja",
+  "Mendoza",
+  "Misiones",
+  "Neuquén",
+  "Río Negro",
+  "Salta",
+  "San Juan",
+  "San Luis",
+  "Santiago del Estero",
+  "Santa Fe",
+  "Tierra del Fuego",
+  "Tucumán",
 ];
 
 export default function AdminUserPage() {
@@ -19,8 +38,14 @@ export default function AdminUserPage() {
   const { id } = useParams();
 
   const [form, setForm] = useState({
-    name: "", lastname: "", username: "", dni: "",
-    email: "", fecnac: "", institucion: "", provincia: "",
+    name: "",
+    lastname: "",
+    username: "",
+    dni: "",
+    email: "",
+    fecnac: "",
+    institucion: "",
+    provincia: "",
     profileImage: "",
   });
 
@@ -50,7 +75,7 @@ export default function AdminUserPage() {
   }, [id]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -135,31 +160,84 @@ export default function AdminUserPage() {
             <div className="grid grid-cols-2 gap-6">
               {/* Columna izquierda */}
               <div className="flex flex-col gap-3">
-                <label className="text-sm font-semibold text-foreground">Nombre:</label>
-                <Input name="name" value={form.name} onChange={handleChange} className="font-bold" />
+                <label className="text-sm font-semibold text-foreground">
+                  Nombre:
+                </label>
+                <Input
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  className="font-bold"
+                />
 
-                <label className="text-sm font-semibold text-foreground">Apodo:</label>
-                <Input name="username" value={form.username} onChange={handleChange} className="font-bold" />
+                <label className="text-sm font-semibold text-foreground">
+                  Apodo:
+                </label>
+                <Input
+                  name="username"
+                  value={form.username}
+                  onChange={handleChange}
+                  className="font-bold"
+                />
 
-                <label className="text-sm font-semibold text-foreground">Institución:</label>
-                <Input name="institucion" value={form.institucion} onChange={handleChange} className="font-bold" />
+                <label className="text-sm font-semibold text-foreground">
+                  Institución:
+                </label>
+                <Input
+                  name="institucion"
+                  value={form.institucion}
+                  onChange={handleChange}
+                  className="font-bold"
+                />
 
-                <label className="text-sm font-semibold text-foreground">DNI:</label>
-                <Input name="dni" value={form.dni} onChange={handleChange} className="font-bold" />
+                <label className="text-sm font-semibold text-foreground">
+                  DNI:
+                </label>
+                <Input
+                  name="dni"
+                  value={form.dni}
+                  onChange={handleChange}
+                  className="font-bold"
+                />
 
-                <label className="text-sm font-semibold text-foreground">Email:</label>
-                <Input name="email" value={form.email} onChange={handleChange} className="font-bold" placeholder="Sin email" />
+                <label className="text-sm font-semibold text-foreground">
+                  Email:
+                </label>
+                <Input
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  className="font-bold"
+                  placeholder="Sin email"
+                />
               </div>
 
               {/* Columna derecha */}
               <div className="flex flex-col gap-3">
-                <label className="text-sm font-semibold text-foreground">Apellido:</label>
-                <Input name="lastname" value={form.lastname} onChange={handleChange} className="font-bold" />
+                <label className="text-sm font-semibold text-foreground">
+                  Apellido:
+                </label>
+                <Input
+                  name="lastname"
+                  value={form.lastname}
+                  onChange={handleChange}
+                  className="font-bold"
+                />
 
-                <label className="text-sm font-semibold text-foreground">Fecha de nacimiento:</label>
-                <Input type="date" name="fecnac" value={form.fecnac} onChange={handleChange} className="font-bold" />
+                <label className="text-sm font-semibold text-foreground">
+                  Fecha de nacimiento:
+                </label>
+                <Input
+                  type="date"
+                  name="fecnac"
+                  value={form.fecnac}
+                  onChange={handleChange}
+                  className="font-bold"
+                />
 
-                <label className="text-sm font-semibold text-foreground">Provincia:</label>
+                <label className="text-sm font-semibold text-foreground">
+                  Provincia:
+                </label>
                 <select
                   name="provincia"
                   value={form.provincia}
@@ -168,7 +246,9 @@ export default function AdminUserPage() {
                 >
                   <option value="">Seleccioná una provincia</option>
                   {PROVINCIAS.map((p) => (
-                    <option key={p} value={p}>{p}</option>
+                    <option key={p} value={p}>
+                      {p}
+                    </option>
                   ))}
                 </select>
 
@@ -211,7 +291,11 @@ export default function AdminUserPage() {
           <div className="bg-white p-6 rounded-xl shadow-xl w-[350px] text-center animate-in fade-in zoom-in">
             <h2 className="text-xl font-bold mb-2">✅ Cambios guardados</h2>
             <p className="text-gray-600">
-              El perfil de <span className="font-semibold">{form.name} {form.lastname}</span> fue actualizado con éxito.
+              El perfil de{" "}
+              <span className="font-semibold">
+                {form.name} {form.lastname}
+              </span>{" "}
+              fue actualizado con éxito.
             </p>
           </div>
         </div>
@@ -221,9 +305,14 @@ export default function AdminUserPage() {
       {resetSuccess && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-xl shadow-xl w-[350px] text-center animate-in fade-in zoom-in">
-            <h2 className="text-xl font-bold mb-2">🔑 Contraseña restablecida</h2>
+            <h2 className="text-xl font-bold mb-2">
+              🔑 Contraseña restablecida
+            </h2>
             <p className="text-gray-600">
-              La contraseña de <span className="font-semibold">{form.name}</span> fue restablecida a <span className="font-mono font-bold">postal</span>.
+              La contraseña de{" "}
+              <span className="font-semibold">{form.name}</span> fue
+              restablecida a <span className="font-mono font-bold">postal</span>
+              .
             </p>
           </div>
         </div>

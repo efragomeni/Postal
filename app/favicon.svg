@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="31.999998"
+   height="31.999998"
+   viewBox="0 0 8.4666661 8.4666661"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <rect
+       x="42.488503"
+       y="202.17056"
+       width="416.94763"
+       height="105.05399"
+       id="rect2" />
+  </defs>
+  <g
+     id="layer1">
+    <g
+       id="g2"
+       style="display:inline"
+       transform="matrix(0.06317453,0,0,0.06317453,-2.2277439,-0.49559651)">
+      <path
+         style="display:inline;opacity:1;fill:#0f2e59;fill-opacity:1;stroke:#0f2e59;stroke-width:0.262686;stroke-opacity:1"
+         id="rect1"
+         width="131.99237"
+         height="51.392754"
+         x="36.277264"
+         y="49.282166"
+         transform="matrix(1.0000048,0,0,0.99520474,-4.8811606e-4,0.23600568)"
+         d="m 41.27724,49.282166 h 121.99242 c 2.76998,0 4.99997,2.229989 4.99997,4.999976 v 41.392801 c 0,2.769987 -2.22999,4.999977 -4.99997,4.999977 H 41.27724 c -2.769987,0 -4.999976,-2.22999 -4.999976,-4.999977 V 54.282142 c 0,-2.769987 2.229989,-4.999976 4.999976,-4.999976 z"
+         rx="4.9999762" />
+      <text
+         xml:space="preserve"
+         transform="matrix(0.42906078,0,0,0.50158925,40.563784,-44.407745)"
+         id="text1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:64px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect2);display:inline;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:1"><tspan
+           x="42.488281"
+           y="260.55906"
+           id="tspan2">Postal</tspan></text>
+    </g>
+  </g>
+</svg>

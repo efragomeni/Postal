@@ -107,13 +107,13 @@ export default function Home() {
               Temas del Foro
             </h2>
             <h3 className="text-sm sm:text-lg md:text-xl text-muted-foreground">
-              Explora las conversaciones de la comunidad
+              Explora las postales de la comunidad
             </h3>
           </div>
           <div className="shrink-0 flex gap-2">
             <Button
               onClick={() => router.push("/juego-del-dia")}
-              className="h-10 sm:h-12 text-sm sm:text-base md:text-lg gap-2 cursor-pointer bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 border-0 text-white shadow-md hover:shadow-lg transition-all"
+              className="h-10 sm:h-12 text-sm sm:text-base md:text-lg gap-2 cursor-pointer border-0 text-white btn-gradient-smooth"
             >
               <Gamepad2 className="w-5 h-5" />
               <span className="hidden sm:inline">Juego del día</span>

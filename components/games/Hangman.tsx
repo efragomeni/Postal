@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getDailyHangmanWord } from "@/lib/dailyGame";
+import { getDailyHangmanWord, type HangmanWord } from "@/lib/dailyGame";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 
 export default function Hangman({ seed }: { seed: number }) {
-  const word = getDailyHangmanWord(seed);
+  const hangmanData = getDailyHangmanWord(seed);
+  const word = hangmanData.palabra.toUpperCase();
   const [guessedLetters, setGuessedLetters] = useState<Set<string>>(new Set());
   const [mistakes, setMistakes] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   
   const MAX_MISTAKES = 6;
   const alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
@@ -17,6 +19,7 @@ export default function Hangman({ seed }: { seed: number }) {
   useEffect(() => {
     setGuessedLetters(new Set());
     setMistakes(0);
+    setShowModal(false);
   }, [seed]);
 
   const handleGuess = (letter: string) => {
@@ -33,6 +36,12 @@ export default function Hangman({ seed }: { seed: number }) {
 
   const isGameWon = word.split("").every((letter) => guessedLetters.has(letter));
   const isGameOver = mistakes >= MAX_MISTAKES;
+
+  useEffect(() => {
+    if (isGameWon) {
+      setShowModal(true);
+    }
+  }, [isGameWon]);
 
   // Simple SVG Hangman drawing based on mistakes
   const renderHangman = () => (
@@ -77,9 +86,9 @@ export default function Hangman({ seed }: { seed: number }) {
         ))}
       </div>
 
-      {(isGameWon || isGameOver) && (
-        <div className={`text-xl font-bold mb-6 px-6 py-3 rounded-lg ${isGameWon ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-          {isGameWon ? "¡Felicidades, ganaste!" : "Fin del juego. ¡Mejor suerte mañana!"}
+      {isGameOver && !isGameWon && (
+        <div className="text-xl font-bold mb-6 px-6 py-3 rounded-lg bg-red-100 text-red-800">
+          Fin del juego. ¡Mejor suerte mañana!
         </div>
       )}
 
@@ -108,11 +117,42 @@ export default function Hangman({ seed }: { seed: number }) {
       
       {/* Dev Reset for testing ONLY (doesn't change the daily word) */}
       <div className="mt-8 flex justify-center w-full">
-         <Button variant="ghost" onClick={() => { setGuessedLetters(new Set()); setMistakes(0); }} className="text-gray-400 hover:text-gray-600 gap-2 cursor-pointer">
+         <Button variant="ghost" onClick={() => { setGuessedLetters(new Set()); setMistakes(0); setShowModal(false); }} className="text-gray-400 hover:text-gray-600 gap-2 cursor-pointer">
             <RefreshCcw className="w-4 h-4" />
             Reiniciar (Local)
          </Button>
       </div>
+
+      {/* Modal de definición */}
+      {showModal && (
+        <div 
+          className="fixed inset-0 bg-gray-900/40 flex items-center justify-center z-50 p-4"
+          onClick={() => setShowModal(false)}
+        >
+          <div 
+            className="bg-white rounded-lg shadow-xl max-w-md w-full p-8 text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-3xl font-bold mb-4 text-green-600">¡Felicidades!</h3>
+            <div className="mb-6">
+              <p className="text-xl font-semibold text-gray-800 mb-4">
+                La palabra era: <span className="text-blue-600">{word}</span>
+              </p>
+              <div className="bg-gray-100 p-4 rounded">
+                <p className="text-gray-700 text-lg">
+                  <span className="font-semibold">Definición:</span> {hangmanData.definición}
+                </p>
+              </div>
+            </div>
+            <Button
+              onClick={() => setShowModal(false)}
+              className=" cursor-pointer w-full bg-green-600 hover:bg-green-600 text-white"
+            >
+              Cerrar
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

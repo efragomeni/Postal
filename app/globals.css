@@ -93,3 +93,32 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* 🎨 Animación de gradiente suave */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+@layer components {
+  .btn-gradient-smooth {
+    background: linear-gradient(
+      to right,
+      #0f2e59,
+      #26466c,
+      #33658a,
+      #26466c,
+      #0f2e59
+    );
+    background-size: 200% 100%;
+    /* box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75); */
+  }
+
+  .btn-gradient-smooth:hover {
+    animation: gradientFlow 2s ease-in-out;
+  }
+}

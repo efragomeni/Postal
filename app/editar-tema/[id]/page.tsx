@@ -294,7 +294,7 @@ export default function EditTopicPage() {
                   variant="secondary"
                   type="submit"
                   disabled={loading}
-                  className="h-14 text-xl font-semibold flex-1"
+                  className="h-14 text-xl font-semibold flex-1 cursor-pointer"
                 >
                   {loading ? "Guardando…" : "Guardar cambios"}
                 </Button>
@@ -303,7 +303,7 @@ export default function EditTopicPage() {
                   type="button"
                   onClick={() => router.back()}
                   disabled={loading}
-                  className="h-14 text-xl flex-1"
+                  className="h-14 text-xl flex-1  cursor-pointer"
                 >
                   Cancelar
                 </Button>

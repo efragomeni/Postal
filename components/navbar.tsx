@@ -2,7 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { LogOut, Home, Plus, User, Bell, Trash, LayoutList } from "lucide-react";
+import {
+  LogOut,
+  Home,
+  Plus,
+  User,
+  Bell,
+  Trash,
+  LayoutList,
+} from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState, useRef } from "react";
 import { UserSearch } from "@/components/UserSearch";
@@ -81,7 +89,9 @@ export function Navbar() {
   // Marcar como leídas al abrir el dropdown de admin
   useEffect(() => {
     if (adminOpen) {
-      fetch("/api/admin/notifications", { method: "PATCH" }).catch(console.error);
+      fetch("/api/admin/notifications", { method: "PATCH" }).catch(
+        console.error,
+      );
     }
   }, [adminOpen]);
 
@@ -121,9 +131,14 @@ export function Navbar() {
           className="cursor-pointer"
           onClick={() => router.push(isAdmin ? "/admin" : "/")}
         >
-          <img
+          {/* <img
             className="h-16 mx-auto"
             src="/img/Postal.svg"
+            alt="Logo Postal"
+          /> */}
+          <img
+            className="h-16 mx-auto"
+            src="/img/Postal2.svg"
             alt="Logo Postal"
           />
         </div>

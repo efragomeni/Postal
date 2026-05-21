@@ -77,7 +77,7 @@ export function UserSearch() {
     // No me convence el w-full me queda raro en mobile. 
     <div ref={containerRef} className="relative w-full md:w-auto"> 
       {/* Input */}
-      <div className="flex items-center gap-2 bg-white border border-[#0f2e59] rounded-full px-3 py-2 focus-within:border-[#0f2e59] transition">
+      <div className="flex items-center gap-2 bg-white border border-[#0f2e59] rounded-full px-3 py-2 focus-within:border-[#0f2e59] transition w-36 lg:w-72">
         <Search size={16} className="text-[#0f2e59] shrink-0" />
         <input
           type="text"
@@ -123,10 +123,13 @@ export function UserSearch() {
                       className="w-9 h-9 rounded-full object-cover shrink-0"
                     />
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-gray-800 truncate group-hover:underline">
-                        {user.name} {user.lastname}
-                      </p>
-                      <p className="text-xs text-gray-400 group-hover:underline">
+                      <div className="relative inline-block">
+                        <p className="text-sm font-semibold text-gray-800 transition">
+                          {user.name} {user.lastname}
+                        </p>
+                        <span className="absolute bottom-0 left-1/2 h-[1px] w-0 bg-[#0f2e59] group-hover:w-full group-hover:left-0 transition-all duration-300" />
+                      </div>
+                      <p className="text-xs text-gray-400">
                         @{user.username}
                       </p>
                     </div>
@@ -145,7 +148,7 @@ export function UserSearch() {
                       clearSearch();
                     }}
                     title="Enviar mensaje"
-                    className="shrink-0 ml-3 flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition cursor-pointer font-medium text-xs border border-primary/20"
+                    className="shrink-0 ml-3 flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-color-principal hover:bg-primary/20 transition cursor-pointer font-medium text-xs border border-color-principal/20"
                   >
                     <MessageCircle className="w-4 h-4" />
                     Chat
