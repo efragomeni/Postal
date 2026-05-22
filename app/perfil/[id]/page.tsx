@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Pencil, ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { PageTopBar } from "@/components/PageTopBar";
 
 export default function Perfil() {
   const router = useRouter();
@@ -173,25 +174,9 @@ export default function Perfil() {
     <div className="min-h-screen bg-secondary">
       <main className="container mx-auto px-4 py-8">
         {isAdmin ? (
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={() => router.push("/admin")}
-            className="mb-6 h-12 text-base md:text-lg gap-2 cursor-pointer"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            Volver al Inicio
-          </Button>
+          <PageTopBar backHref="/admin" hideActions />
         ) : (
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={() => router.push("/")}
-            className="mb-6 h-12 text-base md:text-lg gap-2 cursor-pointer"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            Volver al Inicio
-          </Button>
+          <PageTopBar />
         )}
 
         <Card className="max-w-4xl shadow-xl rounded-2xl m-auto">

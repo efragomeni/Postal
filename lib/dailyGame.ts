@@ -1,4 +1,5 @@
 export type GameType = "hangman" | "puzzle" | "crossword";
+import { PALABRAS as CRUCIGRAMA_PALABRAS } from "./crossword_words";
 
 export interface DailyGameData {
   type: GameType;
@@ -9,7 +10,7 @@ export interface DailyGameData {
 export function getDailyGame(): DailyGameData {
   // Use local date string to ensure it changes at midnight local time
   const today = new Date();
-  today.setDate(today.getDate() + 5); // Prueba con +1, o +2
+  today.setDate(today.getDate()+2); // Prueba con +1, o +2
 
   const dateStr = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
   
@@ -40,15 +41,7 @@ export interface HangmanWord {
   definición: string;
 }
 
-export function getDailyHangmanWord(seed: number): HangmanWord {
-  // const words = [
-  //   "POSTAL", "CORREO", "MENSAJE", "USUARIO", "SISTEMA", 
-  //   "INTERNET", "TECNOLOGIA", "FORO", "COMUNIDAD", "ARGENTINA",
-  //   "PROVINCIA", "COMPUTADORA", "PLATAFORMA", "SEGURIDAD", "PROGRAMA"
-  // ];
-  
-  const words=[
-
+export const PALABRAS: HangmanWord[] = [
   {
     "palabra": "Abstraer",
     "definición": "Separar por medio de una operación intelectual las cualidades de un objeto para considerarlas aisladamente."
@@ -449,106 +442,278 @@ export function getDailyHangmanWord(seed: number): HangmanWord {
     "palabra": "Fidedigno",
     "definición": "Que es digno de ser creído o que es totalmente verdadero y confiable."
   }
-    ]
+];
 
-
-  return words[seed % words.length];
+export function getDailyHangmanWord(seed: number): HangmanWord {
+  return PALABRAS[seed % PALABRAS.length];
 }
 
 
-/*.*.*.* Crucigrama  *.*.*.*/
-export function getDailyCrossword(seed: number) {
-  // Cuadrículas 5x5 simétricas y válidas en español
-  const crosswords = [
-    {
-      grid: [
-        ["G", "A", "T", "O", "S"],
-        ["A", "B", "A", "J", "O"],
-        ["T", "A", "P", "A", "S"],
-        ["O", "J", "A", "L", "A"],
-        ["S", "O", "S", "A", "S"]
-      ],
-      clues: {
-        across: {
-          1: "Felinos domésticos (5)",
-          6: "Hacia un lugar inferior (5)",
-          7: "Cubiertas de frascos (5)",
-          8: "Deseo de que algo suceda (5)",
-          9: "Personas sin gracia (5)"
-        },
-        down: {
-          1: "Animales que maúllan (5)",
-          2: "En dirección al suelo (5)",
-          3: "Aperitivos españoles (5)",
-          4: "Dios quiera que pase (5)",
-          5: "Comidas sin sal (5)"
-        }
-      }
-    },
-    {
-      grid: [
-        ["R", "O", "M", "A", "S"],
-        ["O", "P", "E", "R", "A"],
-        ["M", "E", "L", "O", "N"],
-        ["A", "R", "O", "M", "A"],
-        ["S", "A", "N", "A", "S"]
-      ],
-      clues: {
-        across: {
-          1: "Sin punta (fem, pl) (5)",
-          6: "Obra teatral cantada (5)",
-          7: "Fruta grande y dulce (5)",
-          8: "Olor muy agradable (5)",
-          9: "Que gozan de buena salud (5)"
-        },
-        down: {
-          1: "De forma obtusa (fem, pl) (5)",
-          2: "Teatro musical clásico (5)",
-          3: "Fruta de verano jugosa (5)",
-          4: "Perfume, fragancia (5)",
-          5: "Sin enfermedades (fem) (5)"
-        }
-      }
-    },
-    {
-      grid: [
-        ["T", "A", "C", "O", "S"],
-        ["A", "B", "A", "J", "O"],
-        ["C", "A", "J", "A", "S"],
-        ["O", "J", "A", "L", "A"],
-        ["S", "O", "S", "A", "S"]
-      ],
-      clues: {
-        across: {
-          1: "Comida típica mexicana (5)",
-          6: "En la parte inferior (5)",
-          7: "Recipientes de cartón (5)",
-          8: "Ojalá, expresión de deseo (5)",
-          9: "Carentes de sabor (5)"
-        },
-        down: {
-          1: "Zapatos altos de mujer (5)",
-          2: "Hacia abajo (5)",
-          3: "Donde guardas objetos mudanza (5)",
-          4: "Esperanza de que ocurra (5)",
-          5: "Aburridas, sin gracia (5)"
+/*.*.*.* Crucigrama dinámico  *.*.*.*/
+
+/** Normaliza una palabra en español: mayúsculas, sin tildes, sin caracteres especiales */
+function normalizeSpanish(word: string): string {
+  return word
+    .toUpperCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // elimina diacríticos (tildes, diéresis)
+    .replace(/[^A-Z]/g, "");          // solo letras A-Z
+}
+
+/** Shuffle determinístico con semilla (LCG) */
+function seededShuffle<T>(arr: T[], seed: number): T[] {
+  const result = [...arr];
+  let s = seed;
+  for (let i = result.length - 1; i > 0; i--) {
+    s = Math.abs(((s * 1664525) + 1013904223) | 0);
+    const j = Math.abs(s) % (i + 1);
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+/**
+ * Verifica si una palabra puede colocarse en la posición dada.
+ * Reglas:
+ * 1. No conflictos de letras
+ * 2. No extender palabras existentes (celda antes/después libre)
+ * 3. No crear palabras paralelas adyacentes
+ * 4. Debe intersecar al menos una celda existente
+ */
+function canPlaceWord(
+  gridMap: Map<string, string>,
+  word: string,
+  direction: "across" | "down",
+  startRow: number,
+  startCol: number
+): boolean {
+  const dr = direction === "down" ? 1 : 0;
+  const dc = direction === "across" ? 1 : 0;
+  const len = word.length;
+
+  // Celda antes del inicio (no puede extender una palabra existente)
+  if (gridMap.has(`${startRow - dr},${startCol - dc}`)) return false;
+  // Celda después del fin
+  if (gridMap.has(`${startRow + dr * len},${startCol + dc * len}`)) return false;
+
+  let intersections = 0;
+
+  for (let i = 0; i < len; i++) {
+    const r = startRow + dr * i;
+    const c = startCol + dc * i;
+    const existing = gridMap.get(`${r},${c}`);
+
+    if (existing !== undefined) {
+      // La celda ya existe: debe coincidir con la letra
+      if (existing !== word[i]) return false;
+      intersections++;
+    } else {
+      // Celda vacía: verificar que no haya celdas perpendiculares ocupadas
+      // (evita palabras paralelas adyacentes)
+      const perp1 = `${r + dc},${c + dr}`;
+      const perp2 = `${r - dc},${c - dr}`;
+      if (gridMap.has(perp1) || gridMap.has(perp2)) return false;
+    }
+  }
+
+  // Debe tener al menos una intersección con palabras existentes
+  return intersections > 0;
+}
+
+export interface CrosswordCellData {
+  letter: string;
+  clueNumber?: number;
+  wordIndices: number[];
+}
+
+export interface CrosswordPlacedWord {
+  word: string;          // Normalizada (sin tildes, mayúsculas)
+  originalWord: string;  // Original con tildes
+  definicion: string;
+  direction: "across" | "down";
+  startRow: number;
+  startCol: number;
+  clueNumber: number;
+}
+
+export interface CrosswordLayout {
+  placedWords: CrosswordPlacedWord[];
+  gridData: (CrosswordCellData | null)[][];
+  gridHeight: number;
+  gridWidth: number;
+}
+
+export function getDailyCrosswordLayout(seed: number): CrosswordLayout {
+  // Normalizar y deduplicar todas las palabras
+  const allCandidates = CRUCIGRAMA_PALABRAS
+    .map(w => ({
+      originalWord: w.palabra,
+      definicion: w.definicion,
+      normalized: normalizeSpanish(w.palabra),
+    }))
+    .filter(w => w.normalized.length >= 4 && w.normalized.length <= 14)
+    // Eliminar duplicados por palabra normalizada
+    .filter((w, idx, arr) => arr.findIndex(x => x.normalized === w.normalized) === idx);
+
+  // Ordenar por longitud descendente para maximizar intersecciones
+  const byLength = [...allCandidates].sort((a, b) => b.normalized.length - a.normalized.length);
+
+  // Elegir la palabra más larga como eje central, el resto se baraja con la semilla
+  const firstWord = byLength[0];
+  const restWords = seededShuffle(
+    allCandidates.filter(w => w.normalized !== firstWord.normalized),
+    seed
+  );
+
+  const gridMap = new Map<string, string>(); // "r,c" → letra
+  const tempPlaced: Array<{
+    word: string;
+    originalWord: string;
+    definicion: string;
+    direction: "across" | "down";
+    startRow: number;
+    startCol: number;
+  }> = [];
+
+  const CENTER = 30; // Coordenadas virtuales centradas
+
+  // Colocar la primera palabra verticalmente en el centro
+  const firstStartRow = CENTER - Math.floor(firstWord.normalized.length / 2);
+  const firstStartCol = CENTER;
+  for (let i = 0; i < firstWord.normalized.length; i++) {
+    gridMap.set(`${firstStartRow + i},${firstStartCol}`, firstWord.normalized[i]);
+  }
+  tempPlaced.push({
+    word: firstWord.normalized,
+    originalWord: firstWord.originalWord,
+    definicion: firstWord.definicion,
+    direction: "down",
+    startRow: firstStartRow,
+    startCol: firstStartCol,
+  });
+
+  // Intentar colocar hasta 15 palabras en total
+  for (const candidate of restWords) {
+    if (tempPlaced.length >= 15) break;
+    const norm = candidate.normalized;
+    let placed = false;
+
+    // Intentar intersecar con cada palabra ya colocada
+    for (const pw of tempPlaced) {
+      if (placed) break;
+      const perpDir = pw.direction === "across" ? "down" : "across";
+
+      // Iterar por cada letra de la palabra colocada (punto de intersección potencial)
+      for (let pi = 0; pi < pw.word.length && !placed; pi++) {
+        // Iterar por cada letra del candidato
+        for (let ci = 0; ci < norm.length && !placed; ci++) {
+          if (pw.word[pi] !== norm[ci]) continue;
+
+          // Calcular posición de inicio del candidato
+          let newStartRow: number, newStartCol: number;
+          if (pw.direction === "across") {
+            newStartRow = pw.startRow - ci;
+            newStartCol = pw.startCol + pi;
+          } else {
+            newStartRow = pw.startRow + pi;
+            newStartCol = pw.startCol - ci;
+          }
+
+          if (canPlaceWord(gridMap, norm, perpDir, newStartRow, newStartCol)) {
+            const dr = perpDir === "down" ? 1 : 0;
+            const dc = perpDir === "across" ? 1 : 0;
+            for (let i = 0; i < norm.length; i++) {
+              gridMap.set(`${newStartRow + dr * i},${newStartCol + dc * i}`, norm[i]);
+            }
+            tempPlaced.push({
+              word: norm,
+              originalWord: candidate.originalWord,
+              definicion: candidate.definicion,
+              direction: perpDir,
+              startRow: newStartRow,
+              startCol: newStartCol,
+            });
+            placed = true;
+          }
         }
       }
     }
-  ];
-  return crosswords[seed % crosswords.length];
-}
+  }
 
+  // Calcular límites de la cuadrícula
+  let minRow = Infinity, maxRow = -Infinity;
+  let minCol = Infinity, maxCol = -Infinity;
+  for (const key of gridMap.keys()) {
+    const [r, c] = key.split(",").map(Number);
+    minRow = Math.min(minRow, r);
+    maxRow = Math.max(maxRow, r);
+    minCol = Math.min(minCol, c);
+    maxCol = Math.max(maxCol, c);
+  }
+
+  const gridHeight = maxRow - minRow + 1;
+  const gridWidth  = maxCol  - minCol  + 1;
+
+  // Normalizar coordenadas (origen en 0,0)
+  const normalizedPlaced = tempPlaced.map(pw => ({
+    ...pw,
+    startRow: pw.startRow - minRow,
+    startCol: pw.startCol - minCol,
+  }));
+
+  // Asignar números de pistas: de arriba-abajo, izquierda-derecha
+  const startKeys = new Map<string, number>(); // "r,c" → número de pista
+  const sortedByPos = [...normalizedPlaced].sort((a, b) =>
+    a.startRow !== b.startRow ? a.startRow - b.startRow : a.startCol - b.startCol
+  );
+  let clueNum = 1;
+  for (const pw of sortedByPos) {
+    const key = `${pw.startRow},${pw.startCol}`;
+    if (!startKeys.has(key)) startKeys.set(key, clueNum++);
+  }
+
+  const placedWords: CrosswordPlacedWord[] = normalizedPlaced.map(pw => ({
+    word: pw.word,
+    originalWord: pw.originalWord,
+    definicion: pw.definicion,
+    direction: pw.direction,
+    startRow: pw.startRow,
+    startCol: pw.startCol,
+    clueNumber: startKeys.get(`${pw.startRow},${pw.startCol}`)!,
+  }));
+
+  // Construir gridData (array 2D de celdas)
+  const gridData: (CrosswordCellData | null)[][] = Array.from(
+    { length: gridHeight },
+    () => Array(gridWidth).fill(null)
+  );
+
+  placedWords.forEach((pw, pwIdx) => {
+    const dr = pw.direction === "down" ? 1 : 0;
+    const dc = pw.direction === "across" ? 1 : 0;
+    for (let i = 0; i < pw.word.length; i++) {
+      const r = pw.startRow + dr * i;
+      const c = pw.startCol + dc * i;
+      if (!gridData[r][c]) {
+        gridData[r][c] = { letter: pw.word[i], wordIndices: [pwIdx] };
+      } else {
+        if (!gridData[r][c]!.wordIndices.includes(pwIdx)) {
+          gridData[r][c]!.wordIndices.push(pwIdx);
+        }
+      }
+      if (i === 0) {
+        gridData[r][c]!.clueNumber = pw.clueNumber;
+      }
+    }
+  });
+
+  return { placedWords, gridData, gridHeight, gridWidth };
+}
+/*
 export function getDailyPuzzleImage(seed: number): string {
   const images = [
-    "https://picsum.photos/id/10/400/400", // Forest
-    "https://picsum.photos/id/11/400/400", // Landscape
-    "https://picsum.photos/id/12/400/400", // Beach
-    "https://picsum.photos/id/13/400/400", // Mountain
-    "https://picsum.photos/id/14/400/400", // Ocean
-    "https://picsum.photos/id/15/400/400", // Waterfall
-    "https://picsum.photos/id/16/400/400", // Sea
-    "https://picsum.photos/id/17/400/400", // Path
+    /*"/img/Puzzle/1.jpeg",
   ];
   return images[seed % images.length];
 }
+*/

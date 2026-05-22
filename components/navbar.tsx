@@ -10,6 +10,7 @@ import {
   Bell,
   Trash,
   LayoutList,
+  Gamepad2,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState, useRef } from "react";
@@ -176,11 +177,11 @@ export function Navbar() {
             <Button
               variant="secondary"
               size="lg"
-              onClick={() => router.push("/crear-tema")}
+              onClick={() => router.push("/juego-del-dia")}
               className="h-12 text-base md:text-lg gap-2 cursor-pointer"
             >
-              <Plus className="w-5 h-5" />
-              Nueva postal
+              <Gamepad2 className="w-5 h-5" />
+              Juego del día
             </Button>
           )}
 

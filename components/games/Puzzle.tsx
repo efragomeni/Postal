@@ -1,12 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getDailyPuzzleImage } from "@/lib/dailyGame";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 
 export default function Puzzle({ seed }: { seed: number }) {
-  const imageUrl = getDailyPuzzleImage(seed);
+  const [imageUrl, setImageUrl] = useState<string>("/img/Puzzle/1.jpeg");
   
   // Grid size 3x3
   const gridSize = 3;
@@ -14,6 +13,22 @@ export default function Puzzle({ seed }: { seed: number }) {
 
   const [tiles, setTiles] = useState<number[]>([]);
   const [isWon, setIsWon] = useState(false);
+
+  useEffect(() => {
+    async function loadImages() {
+      try {
+        const res = await fetch("/api/puzzle-images");
+        const list: string[] = await res.json();
+        if (Array.isArray(list) && list.length > 0) {
+          const chosen = list[seed % list.length];
+          setImageUrl(chosen);
+        }
+      } catch (err) {
+        console.error("Error fetching puzzle images:", err);
+      }
+    }
+    loadImages();
+  }, [seed]);
 
   // Deterministic random number generator based on seed
   const seededRandom = (s: number) => {
@@ -93,11 +108,12 @@ export default function Puzzle({ seed }: { seed: number }) {
             ¡Felicidades, armaste el rompecabezas!
          </div>
       )}
-
+<div className="flex w-full space-between ">
       {/* Helper image preview */}
       <div className="mb-6 flex flex-col items-center">
         <span className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wider">Imagen Original</span>
-        <img src={imageUrl} alt="Original" className="w-24 h-24 rounded shadow-md object-cover border-2 border-white" />
+        {/*Poner borde azul*/}
+        <img src={imageUrl} alt="Original" className="w-72 h-72 rounded shadow-md object-cover border-2 border-[#000]" />
       </div>
 
       <div className="bg-gray-200 p-2 rounded-xl shadow-inner inline-block">
@@ -105,8 +121,8 @@ export default function Puzzle({ seed }: { seed: number }) {
           className="grid gap-1 bg-white"
           style={{ 
             gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
-            width: "300px", // Fixed width for predictable sizing
-            height: "300px",
+            width: "400px", // Fixed width for predictable sizing
+            height: "400px",
           }}
         >
           {tiles.map((tileValue, index) => {
@@ -138,7 +154,7 @@ export default function Puzzle({ seed }: { seed: number }) {
           })}
         </div>
       </div>
-
+</div>
       {/* Dev Reset */}
       <div className="mt-8 flex justify-center w-full">
          <Button variant="ghost" onClick={() => { setTiles(generateSolvablePuzzle()); setIsWon(false); }} className="text-gray-400 hover:text-gray-600 gap-2 cursor-pointer">

@@ -10,8 +10,9 @@ import {
   CardContent,
   CardDescription,
 } from "@/components/ui/card";
-import { Calendar, MessageSquare,ArrowLeft } from "lucide-react";
+import { Calendar, MessageSquare, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PageTopBar } from "@/components/PageTopBar";
 
 interface Topic {
   _id: string;
@@ -54,15 +55,7 @@ export default function MisPostales() {
   return (
     <div className="min-h-screen w-full bg-secondary ">
       <main className="container mx-auto px-4 py-8">
-          <Button
-          variant="outline"
-          size="lg"
-          onClick={() => router.push("/")}
-          className="mb-6 h-12 text-base md:text-lg gap-2 cursor-pointer"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          Volver al Inicio
-        </Button>
+        <PageTopBar />
         <h1 className="text-3xl font-bold mb-6 text-foreground">
           Mis Postales
         </h1>

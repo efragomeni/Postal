@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Calendar, User, Gamepad2 } from "lucide-react";
+import { MessageSquare, Calendar, User, Plus } from "lucide-react";
 
 interface Reply {
   author: string;
@@ -112,12 +112,14 @@ export default function Home() {
           </div>
           <div className="shrink-0 flex gap-2">
             <Button
-              onClick={() => router.push("/juego-del-dia")}
-              className="h-10 sm:h-12 text-sm sm:text-base md:text-lg gap-2 cursor-pointer border-0 text-white btn-gradient-smooth"
+              variant="secondary"
+              size="lg"
+              onClick={() => router.push("/crear-tema")}
+              className="h-10 sm:h-12 text-sm sm:text-base md:text-lg gap-2 cursor-pointer"
             >
-              <Gamepad2 className="w-5 h-5" />
-              <span className="hidden sm:inline">Juego del día</span>
-              <span className="sm:hidden">Jugar</span>
+              <Plus className="w-5 h-5" />
+              <span className="hidden sm:inline">Nueva postal</span>
+              <span className="sm:hidden">+</span>
             </Button>
             <Button
               variant="secondary"

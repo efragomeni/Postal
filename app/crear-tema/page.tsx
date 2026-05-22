@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, ImagePlus, X } from "lucide-react";
+import { PageTopBar } from "@/components/PageTopBar";
 
 export default function CreateTopicPage() {
   const router = useRouter();
@@ -132,15 +133,7 @@ export default function CreateTopicPage() {
   return (
     <div className="min-h-screen bg-secondary">
         <main className="container mx-auto px-4 py-8">
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={() => router.push("/")}
-          className="mb-6 h-12 text-base md:text-lg gap-2 cursor-pointer"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          Volver al Inicio
-        </Button>
+        <PageTopBar />
 
         <Card className="max-w-3xl mx-auto">
           <CardHeader>

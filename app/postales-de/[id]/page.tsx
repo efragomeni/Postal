@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, MessageSquare, ArrowLeft } from "lucide-react";
+import { PageTopBar } from "@/components/PageTopBar";
 
 interface Topic {
   _id: string;
@@ -79,15 +80,7 @@ export default function PostalesDeUsuario() {
   return (
     <div className="min-h-screen w-full bg-secondary">
       <main className="container mx-auto px-4 py-8">
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={() => router.back()}
-          className="mb-6 h-12 text-base md:text-lg gap-2 cursor-pointer"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          Volver
-        </Button>
+        <PageTopBar />
 
         {/* Título */}
         <div className="flex items-center gap-3 mb-8">

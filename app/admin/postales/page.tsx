@@ -128,7 +128,7 @@ export default function AdminPostalesPage() {
           variant="outline"
           size="lg"
           onClick={() => router.push("/admin")}
-          className="mb-6 h-12 text-base md:text-lg gap-2"
+          className="mb-6 h-12 text-base md:text-lg gap-2 cursor-pointer"
         >
           <ArrowLeft className="w-5 h-5" />
           Volver al panel
@@ -169,11 +169,10 @@ export default function AdminPostalesPage() {
               return (
                 <Card
                   key={topic._id}
-                  className={`hover:shadow-lg transition-shadow cursor-pointer relative ${
-                    topic.reported
+                  className={`hover:shadow-lg transition-shadow cursor-pointer relative ${topic.reported
                       ? "border-orange-400 border-2"
                       : ""
-                  }`}
+                    }`}
                   onClick={() => router.push(`/tema/${topic._id}`)}
                 >
                   {/* Badge denunciada */}
@@ -196,6 +195,8 @@ export default function AdminPostalesPage() {
                       </CardTitle>
 
                       {/* Botón OK — solo en denunciadas */}
+                      {/*
+                     
                       {topic.reported && (
                         <button
                           onClick={(e) => {
@@ -209,8 +210,9 @@ export default function AdminPostalesPage() {
                           <CheckCircle className="w-5 h-5" />
                         </button>
                       )}
+                            */}
                       {/* Botón eliminar */}
-                      <button
+                      {/*<button
                         onClick={(e) => {
                           e.stopPropagation();
                           setTopicToDelete(topic);
@@ -219,7 +221,7 @@ export default function AdminPostalesPage() {
                         className="shrink-0 p-2 rounded-lg text-red-500 hover:bg-red-50 transition cursor-pointer"
                       >
                         <Trash2 className="w-5 h-5" />
-                      </button>
+                      </button>*/}
                     </div>
 
                     {!isBirthday && (

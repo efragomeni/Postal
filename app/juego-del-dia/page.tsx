@@ -3,13 +3,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { getDailyGame, DailyGameData } from "@/lib/dailyGame";
 
 import Hangman from "@/components/games/Hangman";
 import Crossword from "@/components/games/Crossword";
 import Puzzle from "@/components/games/Puzzle";
+import { PageTopBar } from "@/components/PageTopBar";
 
 export default function JuegoDelDiaPage() {
   const { status } = useSession();
@@ -38,17 +37,13 @@ export default function JuegoDelDiaPage() {
   return (
     <div className="min-h-screen bg-secondary">
       <main className="container mx-auto px-4 py-8">
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={() => router.push("/")}
-          className="mb-6 h-12 text-base md:text-lg gap-2 cursor-pointer"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          Volver al Inicio
-        </Button>
+        <PageTopBar />
 
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        <div className={`${
+          dailyGame.type === "crossword"
+            ? "max-w-[calc(100vw-2rem)] xl:max-w-[1350px]"
+            : "max-w-4xl"
+        } mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 w-full`}>
           <div className="bg-gradient-to-r from-purple-500 to-indigo-500 p-6 text-white text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-2">Juego del Día</h1>
             <p className="text-purple-100 font-medium">Un desafío nuevo cada día. ¡Suerte!</p>
