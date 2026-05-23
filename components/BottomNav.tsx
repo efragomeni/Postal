@@ -28,7 +28,7 @@ export function BottomNav() {
     }
   };
 
-  // Cargar notificaciones iniciales y cada 60 segundos
+  // Cargar notificaciones iniciales y cada 8 segundos
   useEffect(() => {
     if (!user || user.role === "admin") return;
 
@@ -43,7 +43,7 @@ export function BottomNav() {
     };
 
     load();
-    const interval = setInterval(load, 60000);
+    const interval = setInterval(load, 8000);
     return () => clearInterval(interval);
   }, [user]);
 
@@ -62,7 +62,7 @@ export function BottomNav() {
     };
 
     loadAdmin();
-    const interval = setInterval(loadAdmin, 60000);
+    const interval = setInterval(loadAdmin, 8000);
     return () => clearInterval(interval);
   }, [user]);
 
@@ -113,54 +113,56 @@ export function BottomNav() {
     <nav className="fixed bottom-0 left-0 w-full bg-primary text-primary-foreground border-t border-gray-700 shadow-lg md:hidden z-50">
       <div className="flex justify-around items-center h-20 px-2">
         {/* 1. Inicio */}
-        <Button
-          variant={pathname === (isAdmin ? "/admin" : "/") ? "default" : "ghost"}
+        <button
           onClick={() => router.push(isAdmin ? "/admin" : "/")}
-          className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 ${
+          className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 cursor-pointer ${
             pathname === (isAdmin ? "/admin" : "/")
               ? "bg-[var(--color-acento)] text-white scale-105"
-              : "hover:bg-[var(--color-acento)] hover:text-white"
+              : "text-primary-foreground hover:bg-[var(--color-acento)]/10"
           }`}
         >
           <Home className="w-7 h-7" />
-        </Button>
+        </button>
 
         {/* 2. Juego del día (usuario) o Ver postales (admin) */}
         {!isAdmin ? (
-          <Button
-            variant={pathname === "/juego-del-dia" ? "default" : "ghost"}
+          <button
             onClick={() => router.push("/juego-del-dia")}
-            className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 ${
+            className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 cursor-pointer ${
               pathname === "/juego-del-dia"
                 ? "bg-[var(--color-acento)] text-white scale-105"
-                : "hover:bg-[var(--color-acento)] hover:text-white"
+                : "text-primary-foreground hover:bg-[var(--color-acento)]/10"
             }`}
           >
             <Gamepad2 className="w-7 h-7" />
-          </Button>
+          </button>
         ) : (
-          <Button
-            variant={pathname === "/admin/postales" ? "default" : "ghost"}
+          <button
             onClick={() => router.push("/admin/postales")}
-            className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 ${
+            className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 cursor-pointer ${
               pathname === "/admin/postales"
                 ? "bg-[var(--color-acento)] text-white scale-105"
-                : "hover:bg-[var(--color-acento)] hover:text-white"
+                : "text-primary-foreground hover:bg-[var(--color-acento)]/10"
             }`}
           >
             <LayoutList className="w-7 h-7" />
-          </Button>
+          </button>
         )}
 
         {/* 3. Avisos (User notifications or Admin complaints) */}
         {isAdmin ? (
           <div className="relative" ref={adminDropupRef}>
-            <Button
-              variant={hasAdminUnread ? "destructive" : "ghost"}
+            <button
               onClick={() => setAdminOpen((s) => !s)}
               aria-expanded={adminOpen}
               aria-haspopup="true"
-              className="flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 relative"
+              className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 relative cursor-pointer ${
+                hasAdminUnread
+                  ? "bg-destructive text-destructive-foreground"
+                  : adminOpen
+                    ? "bg-[var(--color-acento)] text-white scale-105"
+                    : "text-primary-foreground hover:bg-[var(--color-acento)]/10"
+              }`}
             >
               <Bell className="w-7 h-7" />
               {hasAdminUnread && (
@@ -168,7 +170,7 @@ export function BottomNav() {
                   {adminNotifs.filter((n) => !n.read).length}
                 </span>
               )}
-            </Button>
+            </button>
 
             {adminOpen && (
               <div
@@ -205,12 +207,17 @@ export function BottomNav() {
           </div>
         ) : (
           <div className="relative" ref={dropupRef}>
-            <Button
-              variant={hasUnread ? "destructive" : "ghost"}
+            <button
               onClick={() => setOpen((s) => !s)}
               aria-expanded={open}
               aria-haspopup="true"
-              className="flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 relative"
+              className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 relative cursor-pointer ${
+                hasUnread
+                  ? "bg-destructive text-destructive-foreground"
+                  : open
+                    ? "bg-[var(--color-acento)] text-white scale-105"
+                    : "text-primary-foreground hover:bg-[var(--color-acento)]/10"
+              }`}
             >
               <Bell className="w-7 h-7" />
               {hasUnread && (
@@ -218,7 +225,7 @@ export function BottomNav() {
                   {notifications.filter((n) => !n.read).length}
                 </span>
               )}
-            </Button>
+            </button>
 
             {open && (
               <div
@@ -269,13 +276,12 @@ export function BottomNav() {
         )}
 
         {/* 4. Perfil */}
-        <Button
-          variant={pathname.startsWith(`/perfil/`) ? "default" : "ghost"}
+        <button
           onClick={() => router.push(`/perfil/${user.id}`)}
-          className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 ${
+          className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 cursor-pointer ${
             pathname.startsWith(`/perfil/`)
               ? "bg-[var(--color-acento)] text-white scale-105"
-              : "hover:bg-[var(--color-acento)] hover:text-white"
+              : "text-primary-foreground hover:bg-[var(--color-acento)]/10"
           }`}
         >
           <img
@@ -285,16 +291,15 @@ export function BottomNav() {
               pathname.startsWith(`/perfil/`) ? "ring-2 ring-white" : ""
             }`}
           />
-        </Button>
+        </button>
 
         {/* 5. Salir */}
-        <Button
-          variant="ghost"
+        <button
           onClick={() => signOut({ callbackUrl: "/login" })}
-          className="flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 hover:bg-[var(--color-acento)] hover:text-white"
+          className="flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 text-primary-foreground hover:bg-[var(--color-acento)]/10 cursor-pointer"
         >
           <LogOut className="w-7 h-7" />
-        </Button>
+        </button>
       </div>
     </nav>
   );

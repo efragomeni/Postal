@@ -60,7 +60,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-3">
           <CardTitle className="text-3xl md:text-4xl font-bold text-center">
-            <img className="w-50 m-auto" src="/img/POSTAL.png" alt="logo" />
+            <img className="w-50 m-auto" src="/img/Postal.svg" alt="logo" />
           </CardTitle>
           <CardDescription className="text-lg text-center">
             Ingrese sus datos para continuar

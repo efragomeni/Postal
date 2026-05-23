@@ -276,7 +276,7 @@ export default function AdminUserPage() {
               <Button
                 onClick={handleSave}
                 disabled={saving}
-                className="h-12 px-10 gap-2 text-base font-semibold cursor-pointer"
+                className="h-12 px-10 gap-2 text-base font-semibold cursor-pointer border border-[#0f2e59]"
               >
                 <Save className="w-5 h-5" />
                 {saving ? "Guardando…" : "Guardar cambios"}

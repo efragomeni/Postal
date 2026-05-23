@@ -42,7 +42,7 @@ export function Navbar() {
     }
   };
 
-  // Cargar notificaciones iniciales y cada 60 segundos
+  // Cargar notificaciones iniciales y cada 8 segundos
   useEffect(() => {
     if (!user || user.role === "admin") return;
 
@@ -57,7 +57,7 @@ export function Navbar() {
     };
 
     load();
-    const interval = setInterval(load, 60000); // cada 60 segundos
+    const interval = setInterval(load, 8000); // cada 8 segundos
     return () => clearInterval(interval);
   }, [user]);
 
@@ -76,7 +76,7 @@ export function Navbar() {
     };
 
     loadAdmin();
-    const interval = setInterval(loadAdmin, 60000);
+    const interval = setInterval(loadAdmin, 8000);
     return () => clearInterval(interval);
   }, [user]);
 
@@ -139,7 +139,7 @@ export function Navbar() {
           /> */}
           <img
             className="h-16 mx-auto"
-            src="/img/Postal2.svg"
+            src="/img/Postal.svg"
             alt="Logo Postal"
           />
         </div>
