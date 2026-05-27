@@ -226,7 +226,7 @@ export default function Crossword({ seed }: { seed: number }) {
     <div className="flex flex-col items-center gap-8 w-full select-none">
       {/* Encabezado */}
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-800">Crucigrama del Día</h2>
+        <h2 className="text-xl md:text-3xl font-extrabold text-[#1a365d] tracking-tight mb-2">Crucigrama del Día</h2>
         <p className="text-gray-500 text-sm mt-1">
           {placedWords.length} palabra{placedWords.length !== 1 ? "s" : ""} para descifrar
         </p>

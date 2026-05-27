@@ -153,6 +153,7 @@ export function Navbar() {
         {/* Búsqueda en desktop */}
         {!isAdmin && <UserSearch />}
         <div className="md:flex items-center gap-7 hidden">
+          {/* 1. Inicio */}
           <Button
             variant="secondary"
             size="lg"
@@ -163,17 +164,8 @@ export function Navbar() {
             Inicio
           </Button>
 
-          <Button
-            variant="secondary"
-            size="lg"
-            onClick={() => router.push(`/perfil/${user.id}`)}
-            className="h-12 text-base md:text-lg gap-2 cursor-pointer"
-          >
-            <User className="w-5 h-5" />
-            Perfil
-          </Button>
-
-          {!isAdmin && (
+          {/* 2. Juego del día (usuario) o Ver postales (admin) */}
+          {!isAdmin ? (
             <Button
               variant="secondary"
               size="lg"
@@ -183,72 +175,67 @@ export function Navbar() {
               <Gamepad2 className="w-5 h-5" />
               Juego del día
             </Button>
+          ) : (
+            <Button
+              variant="secondary"
+              size="lg"
+              onClick={() => router.push("/admin/postales")}
+              className="h-12 text-base md:text-lg gap-2 cursor-pointer"
+            >
+              <LayoutList className="w-5 h-5" />
+              Ver postales
+            </Button>
           )}
 
-          {/* Botones solo para admin */}
-          {isAdmin && (
-            <>
-              {/* Ver todas las postales */}
+          {/* 3. Avisos (usuario o admin) */}
+          {isAdmin ? (
+            /* Avisos admin (denuncias) */
+            <div className="relative" ref={adminDropdownRef}>
               <Button
-                variant="secondary"
+                variant={hasAdminUnread ? "destructive" : "secondary"}
                 size="lg"
-                onClick={() => router.push("/admin/postales")}
-                className="h-12 text-base md:text-lg gap-2 cursor-pointer"
+                onClick={() => setAdminOpen((s) => !s)}
+                className="h-12 text-base md:text-lg gap-2 flex items-center cursor-pointer"
               >
-                <LayoutList className="w-5 h-5" />
-                Ver postales
+                <span className="hidden sm:inline">Avisos</span>
+                <Bell className="w-5 h-5" />
+                {hasAdminUnread && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full animate-pulse pointer-events-none">
+                    {adminNotifs.filter((n) => !n.read).length}
+                  </span>
+                )}
               </Button>
 
-              {/* Avisos admin (denuncias) */}
-              <div className="relative" ref={adminDropdownRef}>
-                <Button
-                  variant={hasAdminUnread ? "destructive" : "secondary"}
-                  size="lg"
-                  onClick={() => setAdminOpen((s) => !s)}
-                  className="h-12 text-base md:text-lg gap-2 flex items-center cursor-pointer"
-                >
-                  <span className="hidden sm:inline">Avisos</span>
-                  <Bell className="w-5 h-5" />
-                  {hasAdminUnread && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full animate-pulse pointer-events-none">
-                      {adminNotifs.filter((n) => !n.read).length}
-                    </span>
-                  )}
-                </Button>
-
-                {adminOpen && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white shadow-xl rounded-lg p-3 space-y-2 z-50">
-                    {adminNotifs.length === 0 ? (
-                      <p className="text-sm text-gray-500">No hay denuncias</p>
-                    ) : (
-                      adminNotifs.map((n: any) => (
-                        <div
-                          key={n._id}
-                          className={`p-2 rounded flex justify-between items-start cursor-pointer ${
-                            n.read ? "bg-gray-100" : "bg-orange-100"
-                          }`}
-                          onClick={() => {
-                            setAdminOpen(false);
-                            router.push(n.link);
-                          }}
-                        >
-                          <div className="flex-1 pr-2">
-                            <p className="text-sm">{n.message}</p>
-                            <span className="text-xs text-gray-500">
-                              {new Date(n.createdAt).toLocaleString("es-AR")}
-                            </span>
-                          </div>
+              {adminOpen && (
+                <div className="absolute right-0 mt-2 w-80 bg-white shadow-xl rounded-lg p-3 space-y-2 z-50">
+                  {adminNotifs.length === 0 ? (
+                    <p className="text-sm text-gray-500">No hay denuncias</p>
+                  ) : (
+                    adminNotifs.map((n: any) => (
+                      <div
+                        key={n._id}
+                        className={`p-2 rounded flex justify-between items-start cursor-pointer ${
+                          n.read ? "bg-gray-100" : "bg-orange-100"
+                        }`}
+                        onClick={() => {
+                          setAdminOpen(false);
+                          router.push(n.link);
+                        }}
+                      >
+                        <div className="flex-1 pr-2">
+                          <p className="text-sm">{n.message}</p>
+                          <span className="text-xs text-gray-500">
+                            {new Date(n.createdAt).toLocaleString("es-AR")}
+                          </span>
                         </div>
-                      ))
-                    )}
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-
-          {/* Bell para usuarios normales */}
-          {!isAdmin && (
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+          ) : (
+            /* Bell para usuarios normales */
             <div className="relative" ref={dropdownRef}>
               <Button
                 variant={hasUnread ? "destructive" : "secondary"} // cambia color si hay notificaciones nuevas
@@ -315,6 +302,24 @@ export function Navbar() {
             </div>
           )}
 
+          {/* 4. Perfil (con avatar y nombre) */}
+          <Button
+            variant="secondary"
+            size="lg"
+            onClick={() => router.push(`/perfil/${user.id}`)}
+            className="h-12 text-base md:text-lg gap-3 cursor-pointer pl-2 pr-4"
+          >
+            <img
+              src={user.profileImage || "/default.jpg"}
+              alt={user.name}
+              className="w-8 h-8 rounded-full object-cover border border-white/20 shrink-0"
+            />
+            <span className="font-semibold text-sm max-w-40 truncate">
+              {user.name} {user.lastname}
+            </span>
+          </Button>
+
+          {/* 5. Salir */}
           <Button
             variant="secondary"
             size="lg"

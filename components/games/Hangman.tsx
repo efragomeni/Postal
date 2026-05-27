@@ -45,7 +45,7 @@ export default function Hangman({ seed }: { seed: number }) {
 
   // Simple SVG Hangman drawing based on mistakes
   const renderHangman = () => (
-    <svg height="250" width="200" className="mx-auto stroke-current text-gray-800 dark:text-gray-200">
+    <svg height="160" width="130" className="mx-auto stroke-current text-gray-800 dark:text-gray-200 sm:h-[200px] sm:w-[170px] md:h-[250px] md:w-[200px]" viewBox="0 0 200 250">
       {/* Base */}
       <line x1="10" y1="240" x2="190" y2="240" strokeWidth="4" />
       <line x1="50" y1="240" x2="50" y2="20" strokeWidth="4" />
@@ -68,18 +68,18 @@ export default function Hangman({ seed }: { seed: number }) {
   );
 
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Ahorcado</h2>
+    <div className="flex flex-col items-center px-2">
+      <h2 className="text-xl md:text-3xl font-extrabold mb-4 md:mb-8 text-[#1a365d] tracking-tight">Ahorcado</h2>
       
-      <div className="mb-8">
+      <div className="mb-4 md:mb-8">
         {renderHangman()}
       </div>
 
-      <div className="flex gap-2 flex-wrap justify-center mb-8 px-4">
+      <div className="flex gap-1 md:gap-2 flex-wrap justify-center mb-4 md:mb-8 px-2">
         {word.split("").map((letter, i) => (
           <div 
             key={i} 
-            className="w-10 h-12 md:w-12 md:h-14 border-b-4 border-gray-800 flex items-center justify-center text-2xl md:text-3xl font-bold uppercase"
+            className="w-7 h-9 md:w-10 md:h-12 lg:w-12 lg:h-14 border-b-4 border-gray-800 flex items-center justify-center text-base md:text-2xl lg:text-3xl font-bold uppercase"
           >
             {(guessedLetters.has(letter) || isGameOver) ? letter : ""}
           </div>
@@ -87,12 +87,12 @@ export default function Hangman({ seed }: { seed: number }) {
       </div>
 
       {isGameOver && !isGameWon && (
-        <div className="text-xl font-bold mb-6 px-6 py-3 rounded-lg bg-red-100 text-red-800">
+        <div className="text-sm md:text-xl font-bold mb-4 md:mb-6 px-4 py-2 md:px-6 md:py-3 rounded-lg bg-red-100 text-red-800 text-center">
           Fin del juego. ¡Mejor suerte mañana!
         </div>
       )}
 
-      <div className="grid grid-cols-7 gap-2 max-w-lg w-full">
+      <div className="grid grid-cols-7 gap-1 md:gap-2 max-w-xs md:max-w-lg w-full px-1">
         {alphabet.map((letter) => {
           const isGuessed = guessedLetters.has(letter);
           const isCorrect = isGuessed && word.includes(letter);
@@ -103,7 +103,7 @@ export default function Hangman({ seed }: { seed: number }) {
               key={letter}
               onClick={() => handleGuess(letter)}
               disabled={isGuessed || isGameOver || isGameWon}
-              className={`h-12 rounded font-bold text-lg transition-colors cursor-pointer
+              className={`h-8 md:h-12 rounded font-bold text-sm md:text-lg transition-colors cursor-pointer
                 ${isCorrect ? "bg-green-500 text-white" : ""}
                 ${isWrong ? "bg-gray-300 text-gray-500 opacity-50" : ""}
                 ${!isGuessed ? "bg-indigo-100 text-indigo-900 hover:bg-indigo-200" : ""}

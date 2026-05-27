@@ -132,12 +132,13 @@ export default function AdminUserPage() {
       <main className="container mx-auto px-4 py-8">
         <Button
           variant="outline"
-          size="lg"
+          size="sm"
           onClick={() => router.push("/admin")}
-          className="mb-6 h-12 text-base md:text-lg gap-2 cursor-pointer"
+          className="mb-4 md:mb-6 h-9 md:h-12 text-sm md:text-lg gap-1 md:gap-2 cursor-pointer"
         >
-          <ArrowLeft className="w-5 h-5" />
-          Volver al Inicio
+          <ArrowLeft className="w-4 h-4" />
+          <span className="hidden sm:inline">Volver al Inicio</span>
+          <span className="sm:hidden">Volver</span>
         </Button>
 
         <Card className="max-w-4xl shadow-xl rounded-2xl m-auto">
@@ -157,7 +158,7 @@ export default function AdminUserPage() {
             </div>
 
             {/* Campos editables */}
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
               {/* Columna izquierda */}
               <div className="flex flex-col gap-3">
                 <label className="text-sm font-semibold text-foreground">

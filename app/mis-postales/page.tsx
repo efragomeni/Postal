@@ -56,7 +56,7 @@ export default function MisPostales() {
     <div className="min-h-screen w-full bg-secondary ">
       <main className="container mx-auto px-4 py-8">
         <PageTopBar />
-        <h1 className="text-3xl font-bold mb-6 text-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-foreground">
           Mis Postales
         </h1>
         
@@ -73,7 +73,7 @@ export default function MisPostales() {
               onClick={() => router.push(`/tema/${topic._id}`)}
             >
               <CardHeader>
-                <CardTitle className="text-3xl md:text-4xl mb-4">
+                <CardTitle className="text-xl sm:text-2xl md:text-3xl mb-4">
                   {topic.title}
                 </CardTitle>
 

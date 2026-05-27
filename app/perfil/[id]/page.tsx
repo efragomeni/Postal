@@ -217,8 +217,8 @@ export default function Perfil() {
               />
             </div>
             {!isAdmin && (
-              <CardContent className="space-y-8">
-                <div className="grid grid-cols-2 gap-6">
+              <CardContent className="space-y-4 md:space-y-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                   {/* Columna izq. */}
                   <div className="flex flex-col gap-3">
                     <label

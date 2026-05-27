@@ -75,16 +75,16 @@ export function UserSearch() {
 
   return (
     // No me convence el w-full me queda raro en mobile. 
-    <div ref={containerRef} className="relative w-full md:w-auto"> 
+    <div ref={containerRef} className="relative w-full max-w-[280px] sm:max-w-xs md:w-auto"> 
       {/* Input */}
-      <div className="flex items-center gap-2 bg-white border border-[#0f2e59] rounded-full px-3 py-2 focus-within:border-[#0f2e59] transition w-36 lg:w-72">
+      <div className="flex items-center gap-2 bg-white border border-[#0f2e59] rounded-full px-3 py-2 focus-within:border-[#0f2e59] transition w-full md:w-48 lg:w-72">
         <Search size={16} className="text-[#0f2e59] shrink-0" />
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar usuario..."
-          className="bg-transparent text-[#0f2e59] placeholder:text-[#0f2e59]/70 text-base font-semibold outline-none w-36 lg:w-52"
+          className="bg-transparent text-[#0f2e59] placeholder:text-[#0f2e59]/70 text-base font-semibold outline-none w-full flex-1"
         />
         {query && (
           <button
@@ -115,6 +115,7 @@ export function UserSearch() {
                   <Link
                     href={`/postales-de/${user._id}`}
                     onClick={clearSearch}
+                    title="Ver postales"
                     className="flex items-center gap-3 min-w-0 flex-1 group cursor-pointer"
                   >
                     <img

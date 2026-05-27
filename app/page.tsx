@@ -11,7 +11,8 @@ import {
 } from "@/components/ui/card";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Calendar, User, Plus } from "lucide-react";
+import { MessageSquare, Calendar, User } from "lucide-react";
+import { PageTopBar } from "@/components/PageTopBar";
 
 interface Reply {
   author: string;
@@ -101,6 +102,8 @@ export default function Home() {
   return (
     <div className="contenedor-principal min-h-screen bg-secondary">
       <main className="container mx-auto px-4 py-8">
+        <PageTopBar hideBack={true} />
+        
         <div className="contenedor-titulo mb-8 flex sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
           <div className="flex-1">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-3">
@@ -109,26 +112,6 @@ export default function Home() {
             <h3 className="text-sm sm:text-lg md:text-xl text-muted-foreground">
               Explora las postales de la comunidad
             </h3>
-          </div>
-          <div className="shrink-0 flex gap-2">
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={() => router.push("/crear-tema")}
-              className="h-10 sm:h-12 text-sm sm:text-base md:text-lg gap-2 cursor-pointer"
-            >
-              <Plus className="w-5 h-5" />
-              <span className="hidden sm:inline">Nueva postal</span>
-              <span className="sm:hidden">+</span>
-            </Button>
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={() => router.push("/mis-postales")}
-              className="h-10 sm:h-12 text-sm sm:text-base md:text-lg gap-2 cursor-pointer"
-            >
-              <span>Mis postales</span>
-            </Button>
           </div>
         </div>
 
@@ -157,27 +140,27 @@ export default function Home() {
                 <Card
                   key={topic._id}
                   className={`hover:shadow-lg transition-shadow cursor-pointer ${
-                    isBirthday ? "h-[350px]" : ""
+                    isBirthday ? "min-h-[280px] py-4 flex flex-col justify-between" : ""
                   }`}
                   onClick={() => router.push(`/tema/${topic._id}`)}
                 >
                   <CardHeader>
                     {isBirthday ? (
-                      <CardTitle className="text-2xl md:text-3xl mb-3 text-center">
+                      <CardTitle className="text-lg sm:text-xl md:text-2xl mb-3 text-center">
                         {topic.title}
                       </CardTitle>
                     ) : (
-                      <CardTitle className="text-3xl md:text-4xl mb-4">
+                      <CardTitle className="text-xl sm:text-2xl md:text-3xl mb-4">
                         {topic.title}
                       </CardTitle>
                     )}
                     {isBirthday && (
-                      <CardDescription className="text-base md:text-lg space-y-2 flex flex-col items-center">
+                      <CardDescription className="text-sm sm:text-base md:text-lg space-y-2 flex flex-col items-center">
                         {isBirthday && topic.author?.profileImage && (
                           <img
                             src={topic.author.profileImage}
                             alt={topic.author.username}
-                            className="w-24 h-24 rounded-full object-cover border-4 border-pink-400 shadow-lg"
+                            className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-pink-400 shadow-lg"
                           />
                         )}
                         <div className="flex items-center gap-2">
@@ -187,23 +170,23 @@ export default function Home() {
                       </CardDescription>
                     )}
                     {!isBirthday && (
-                      <CardDescription className="text-base md:text-lg space-y-2">
+                      <CardDescription className="text-sm sm:text-base md:text-lg space-y-2">
                         <div className="flex items-center gap-2">
                           {topic.author?.profileImage ? (
                             <img
                               src={topic.author.profileImage}
                               alt={topic.author.username}
-                              className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border border-gray-300"
                             />
                           ) : (
-                            <User className="w-10 h-10 text-gray-500" />
+                            <User className="w-8 h-8 sm:w-10 sm:h-10 text-gray-500" />
                           )}
                           <span className="font-medium">
                             {topic.author?.username || "Usuario desconocido"}
                           </span>
                         </div>
 
-                        <div className="flex mt-2 text-md gap-3 text-muted-foreground">
+                        <div className="flex mt-2 text-xs sm:text-sm md:text-base gap-3 text-muted-foreground flex-wrap">
                           <span>
                             {topic.author?.institucion ||
                               "Institución desconocida"}
@@ -214,7 +197,7 @@ export default function Home() {
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Calendar className="w-5 h-5" />
+                          <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
                           <span>{formatDate(topic.createdAt)}</span>
                         </div>
                       </CardDescription>
@@ -223,10 +206,10 @@ export default function Home() {
 
                   <CardContent>
                     {isBirthday ? (
-                      <div className="flex justify-center mt-4">
+                      <div className="flex justify-center mt-2">
                         <Button
                           size="lg"
-                          className="text-lg hover:bg-blue-200"
+                          className="text-base sm:text-lg hover:bg-blue-200"
                           variant="outline"
                           onClick={() => router.push(`/tema/${topic._id}`)}
                         >
@@ -236,12 +219,12 @@ export default function Home() {
                     ) : (
                       // No es cumpleaño
                       <>
-                        <p className="text-base md:text-lg mb-4 line-clamp-2">
+                        <p className="text-sm sm:text-base md:text-lg mb-4 line-clamp-2">
                           {topic.content}
                         </p>
                         <div className="flex items-center gap-2 text-muted-foreground">
-                          <MessageSquare className="w-5 h-5" />
-                          <span className="text-base md:text-lg font-medium">
+                          <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
+                          <span className="text-sm sm:text-base md:text-lg font-medium">
                             {topic.replies.length}{" "}
                             {topic.replies.length === 1
                               ? "respuesta"

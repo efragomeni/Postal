@@ -79,7 +79,7 @@ export function ChatWindow() {
   const myId = session?.user?.id;
 
   return (
-    <div className="fixed bottom-20 right-4 md:bottom-6 md:right-6 w-80 h-[420px] bg-white rounded-2xl shadow-2xl flex flex-col z-[200] border border-gray-200 overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
+    <div className="fixed bottom-20 right-2 md:bottom-6 md:right-6 w-[calc(100vw-1rem)] max-w-[320px] md:w-80 h-[360px] md:h-[420px] bg-white rounded-2xl shadow-2xl flex flex-col z-[200] border border-gray-200 overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
       {/* Header */}
       <div
         className="flex items-center gap-3 px-4 py-3 shrink-0"

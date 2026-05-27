@@ -202,10 +202,10 @@ export default function TopicPage() {
         <Card className="mb-8">
           <CardHeader>
             <div className="flex justify-between items-start gap-4">
-              <CardTitle className="text-3xl md:text-4xl mb-4">
+              <CardTitle className="text-xl sm:text-2xl md:text-3xl lg:text-4xl mb-4">
                 {topic.title}
               </CardTitle>
-
+ 
               {/* Botones de editar/eliminar */}
               {(isAuthor || canDelete) && (
                 <div className="flex gap-2 shrink-0 mt-1">
@@ -241,32 +241,32 @@ export default function TopicPage() {
                 </div>
               )}
             </div>
-
-            <CardDescription className="text-base md:text-lg space-y-2">
+ 
+            <CardDescription className="text-sm sm:text-base md:text-lg space-y-2">
               <div className="flex items-center gap-2">
                 {topic.author?.profileImage ? (
                   <img
                     src={topic.author.profileImage}
                     alt={topic.author.username}
-                    className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border border-gray-300"
                   />
                 ) : (
-                  <User className="w-10 h-10 text-gray-500" />
+                  <User className="w-8 h-8 sm:w-10 sm:h-10 text-gray-500" />
                 )}
                 <span className="font-medium">
                   {topic.author?.username || "Usuario desconocido"}
                 </span>
               </div>
-
+ 
               <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
+                <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span>{formatDate(topic.createdAt)}</span>
               </div>
             </CardDescription>
           </CardHeader>
-
+ 
           <CardContent>
-            <p className="text-lg md:text-xl leading-relaxed whitespace-pre-wrap">
+            <p className="text-base sm:text-lg md:text-xl leading-relaxed whitespace-pre-wrap">
               {topic.content}
             </p>
             {topic.images && topic.images.length > 0 && (
@@ -284,11 +284,11 @@ export default function TopicPage() {
             )}
           </CardContent>
         </Card>
-
+ 
         {/* Respuestas */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-2xl md:text-3xl font-bold">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold">
               Respuestas ({topic.replies.length})
             </h3>
             {/* Botón Denunciar — solo para quien no es autor ni admin */}
@@ -312,7 +312,7 @@ export default function TopicPage() {
             {topic.replies.length === 0 ? (
               <Card>
                 <CardContent className="py-8 text-center">
-                  <p className="text-lg text-muted-foreground">
+                  <p className="text-base sm:text-lg text-muted-foreground">
                     No hay respuestas todavía. ¡Sé el primero en responder!
                   </p>
                 </CardContent>
@@ -321,25 +321,25 @@ export default function TopicPage() {
               topic.replies.map((reply, i) => (
                 <Card key={i}>
                   <CardHeader>
-                    <CardDescription className="text-base md:text-lg space-y-2">
+                    <CardDescription className="text-sm sm:text-base md:text-lg space-y-2">
                       <div className="flex items-center gap-2">
                         <img
-                          src={reply.author?.profileImage}
-                          className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                          src={reply.author?.profileImage || "/default.jpg"}
+                          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border border-gray-300"
                         />
-
+ 
                         <span className="font-semibold">
                           {reply.author?.username || "Desconocido"}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Calendar className="w-5 h-5" />
+                        <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
                         <span>{formatDate(reply.createdAt)}</span>
                       </div>
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-base md:text-lg leading-relaxed">
+                    <p className="text-sm sm:text-base md:text-lg leading-relaxed">
                       {reply.content}
                     </p>
                   </CardContent>
@@ -348,25 +348,25 @@ export default function TopicPage() {
             )}
           </div>
         </div>
-
+ 
         {/* Formulario para responder */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl md:text-3xl">
+            <CardTitle className="text-xl sm:text-2xl md:text-3xl">
               Escribe tu respuesta
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmitReply} className="space-y-6">
               <div className="space-y-3">
-                <label htmlFor="reply" className="text-lg font-medium block">
+                <label htmlFor="reply" className="text-base sm:text-lg font-medium block">
                   Tu respuesta
                 </label>
                 <Textarea
                   id="reply"
                   value={replyContent}
                   onChange={(e) => setReplyContent(e.target.value)}
-                  className="text-[#FFF] min-h-32 text-lg resize-none"
+                  className="text-[#FFF] min-h-24 sm:min-h-32 text-base sm:text-lg resize-none"
                   placeholder="Escribe tu respuesta aquí..."
                 />
               </div>
@@ -374,7 +374,7 @@ export default function TopicPage() {
                 variant="secondary"
                 type="submit"
                 size="lg"
-                className="h-14 text-xl font-semibold mx-auto block cursor-pointer"
+                className="h-12 sm:h-14 text-lg sm:text-xl font-semibold mx-auto block cursor-pointer"
               >
                 Publicar Respuesta
               </Button>

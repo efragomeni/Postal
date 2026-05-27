@@ -137,17 +137,17 @@ export default function CreateTopicPage() {
 
         <Card className="max-w-3xl mx-auto">
           <CardHeader>
-            <CardTitle className="text-3xl md:text-4xl">
+            <CardTitle className="text-2xl sm:text-3xl">
               Crear Nueva Postal
             </CardTitle>
-            <CardDescription className="text-lg">
+            <CardDescription className="text-base sm:text-lg">
               Comparte tus ideas con la comunidad
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-3">
-                <label htmlFor="title" className="text-lg font-medium block">
+                <label htmlFor="title" className="text-base sm:text-lg font-medium block">
                   Título de la postal
                 </label>
                 <Input
@@ -155,26 +155,26 @@ export default function CreateTopicPage() {
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="h-14 text-lg text-[#FFF]"
+                  className="h-12 sm:h-14 text-base sm:text-lg text-[#FFF]"
                   placeholder="Escribe un título claro y descriptivo (obligatorio)"
                 />
               </div>
 
               <div className="space-y-3">
-                <label htmlFor="content" className="text-lg font-medium block">
+                <label htmlFor="content" className="text-base sm:text-lg font-medium block">
                   Descripción de la postal
                 </label>
                 <Textarea
                   id="content"
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  className="color-[var(--color-principal)] min-h-48 text-lg resize-none"
+                  className="color-[var(--color-principal)] min-h-36 sm:min-h-48 text-base sm:text-lg resize-none"
                   placeholder="Describe tu tema con detalle...(obligatorio)"
                 />
               </div>
 
               <div className="space-y-3">
-                <label className="text-lg font-medium block">
+                <label className="text-base sm:text-lg font-medium block">
                   Imágenes adjuntas (máximo 3)
                 </label>
                 
@@ -184,7 +184,7 @@ export default function CreateTopicPage() {
                     variant="outline"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={imagesFiles.length >= 3}
-                    className="h-14 gap-2 cursor-pointer"
+                    className="h-12 sm:h-14 text-sm sm:text-base gap-2 cursor-pointer"
                   >
                     <ImagePlus className="w-5 h-5" />
                     Añadir imagen
@@ -233,7 +233,7 @@ export default function CreateTopicPage() {
                   type="submit"
                   size="sm"
                   disabled={loading}
-                  className="h-14 text-xl font-semibold flex-1"
+                  className="h-12 sm:h-14 text-lg sm:text-xl font-semibold flex-1"
                 >
                   {loading ? "Publicando..." : "Publicar"}
                 </Button>

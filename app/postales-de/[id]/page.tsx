@@ -91,7 +91,7 @@ export default function PostalesDeUsuario() {
               className="w-10 h-10 rounded-full object-cover border border-gray-300"
             />
           )}
-          <h1 className="text-3xl font-bold text-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
             Postales de{" "}
             <span className="text-color-principal">
               {userInfo ? `${userInfo.name} ${userInfo.lastname}` : "…"}
@@ -113,7 +113,7 @@ export default function PostalesDeUsuario() {
                 onClick={() => router.push(`/tema/${topic._id}`)}
               >
                 <CardHeader>
-                  <CardTitle className="text-3xl md:text-4xl mb-4">
+                  <CardTitle className="text-xl sm:text-2xl md:text-3xl mb-4">
                     {topic.title}
                   </CardTitle>
 

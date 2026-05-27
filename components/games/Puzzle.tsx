@@ -100,29 +100,27 @@ export default function Puzzle({ seed }: { seed: number }) {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Rompecabezas</h2>
+    <div className="flex flex-col items-center w-full">
+      <h2 className="text-xl md:text-3xl font-extrabold mb-4 md:mb-8 text-[#1a365d] tracking-tight">Rompecabezas</h2>
       
       {isWon && (
-         <div className="text-xl font-bold mb-6 px-6 py-3 rounded-lg bg-green-100 text-green-800 animate-pulse">
+         <div className="text-sm md:text-xl font-bold mb-4 md:mb-6 px-4 py-2 md:px-6 md:py-3 rounded-lg bg-green-100 text-green-800 animate-pulse">
             ¡Felicidades, armaste el rompecabezas!
          </div>
       )}
-<div className="flex w-full space-between ">
+<div className="flex flex-col lg:flex-row w-full justify-center items-center lg:items-start gap-6 lg:gap-24">
       {/* Helper image preview */}
-      <div className="mb-6 flex flex-col items-center">
-        <span className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wider">Imagen Original</span>
+      <div className="mb-6 flex flex-col items-center shrink-0">
+        <span className="text-base md:text-lg font-bold text-[#1a365d] mb-2 md:mb-3 uppercase tracking-wider">Imagen Original</span>
         {/*Poner borde azul*/}
-        <img src={imageUrl} alt="Original" className="w-72 h-72 rounded shadow-md object-cover border-2 border-[#000]" />
+        <img src={imageUrl} alt="Original" className="w-56 h-56 sm:w-72 sm:h-72 rounded-xl shadow-lg object-cover border-4 border-[#1a365d]/20" />
       </div>
 
-      <div className="bg-gray-200 p-2 rounded-xl shadow-inner inline-block">
+      <div className="bg-gray-200 p-1.5 md:p-2 rounded-xl shadow-inner inline-block max-w-full">
         <div 
-          className="grid gap-1 bg-white"
+          className="grid gap-1 bg-white w-[280px] h-[280px] xs:w-[320px] xs:h-[320px] sm:w-[400px] sm:h-[400px]"
           style={{ 
             gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
-            width: "400px", // Fixed width for predictable sizing
-            height: "400px",
           }}
         >
           {tiles.map((tileValue, index) => {

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, ChangeEvent, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface UserForm {
   name: string;
@@ -15,6 +17,8 @@ interface UserForm {
 }
 
 export default function AddUserPage() {
+  const router = useRouter();
+
   // lista de provincias
   const provincias = [
     "Buenos Aires",
@@ -166,10 +170,10 @@ export default function AddUserPage() {
   }
 
   return (
-    <div className="w-full flex justify-center mt-10">
+    <div className="w-full flex justify-center px-4 mt-6 md:mt-10">
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-lg p-8 rounded-xl w-[700px]"
+        className="bg-white shadow-lg p-4 md:p-8 rounded-xl w-full max-w-[700px]"
       >
         <div className="flex flex-col items-center mb-6">
           <img
@@ -179,7 +183,7 @@ export default function AddUserPage() {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
           {/* COLUMNA IZQUIERDA */}
           <div className="flex flex-col gap-3">
             <input
@@ -266,19 +270,23 @@ export default function AddUserPage() {
           </div>
         )}
 
-        <div className="flex justify-center mt-8">
-          <button
+        <div className="flex justify-center mt-8 gap-4">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => router.back()}
+            className="px-6 py-2 h-11 text-base font-semibold border-2 border-[#0f2e59] text-[#0f2e59] hover:bg-[#0f2e59]/5 hover:text-[#0f2e59] transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"
+          >
+            Volver
+          </Button>
+          <Button
             type="submit"
+            variant="secondary"
             disabled={!isFormValid || loading}
-            className={`px-6 py-2 rounded-lg text-white 
-              ${
-                isFormValid && !loading
-                  ? "bg-blue-600 hover:bg-blue-700"
-                  : "bg-gray-400 cursor-not-allowed"
-              }`}
+            className="px-6 py-2 h-11 text-base font-semibold"
           >
             {loading ? "Creando..." : "Crear"}
-          </button>
+          </Button>
         </div>
       </form>
 

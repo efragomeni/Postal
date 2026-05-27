@@ -79,8 +79,8 @@ export default function AdminHome() {
   };
 
   return (
-    <div className="p-10 flex flex-col gap-6">
-      <h1 className="text-3xl font-bold text-center">
+    <div className="p-4 md:p-10 flex flex-col gap-6">
+      <h1 className="text-xl md:text-3xl font-bold text-center">
         Panel de Administración 🛡️
       </h1>
 
@@ -141,58 +141,60 @@ export default function AdminHome() {
                 No hay resultados. Realizá una búsqueda.
               </p>
             ) : (
-              <table className="w-full text-left border">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="p-2 border text-center ">DNI</th>
-                    <th className="p-2 border text-center ">Apellido</th>
-                    <th className="p-2 border text-center ">Nombre</th>
-                    <th className="p-2 border text-center ">Perfil</th>
-                    <th className="p-2 border text-center ">Eliminar</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {resultados.map((u) => (
-                    <tr key={u._id}>
-                      <td className="p-2 border text-center ">{u.dni}</td>
-                      <td className="p-2 border text-center ">{u.lastname}</td>
-                      <td className="p-2 border text-center ">{u.name}</td>
-                      <td className="p-2 border text-center">
-                        {/* Boton para ver el perfil */}
-                        <Button
-                          className="cursor-pointer"
-                          variant="secondary"
-                          onClick={() => router.push(`/admin/users/${u._id}`)}
-                        >
-                          Ver
-                        </Button>
-                      </td>
-
-                      <td className="p-2 border text-center">
-                        {/* Boton para eliminar usuarios */}
-                        <Button
-                          className="cursor-pointer"
-                          variant="destructive"
-                          onClick={() => {
-                            setUserToDelete(u);
-                            setShowDeleteModal(true);
-                          }}
-                        >
-                          <X />
-                        </Button>
-                      </td>
+              <div className="overflow-x-auto w-full border rounded-lg">
+                <table className="w-full text-left min-w-[600px]">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="p-2 border text-center ">DNI</th>
+                      <th className="p-2 border text-center ">Apellido</th>
+                      <th className="p-2 border text-center ">Nombre</th>
+                      <th className="p-2 border text-center ">Perfil</th>
+                      <th className="p-2 border text-center ">Eliminar</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+
+                  <tbody>
+                    {resultados.map((u) => (
+                      <tr key={u._id}>
+                        <td className="p-2 border text-center ">{u.dni}</td>
+                        <td className="p-2 border text-center ">{u.lastname}</td>
+                        <td className="p-2 border text-center ">{u.name}</td>
+                        <td className="p-2 border text-center">
+                          {/* Boton para ver el perfil */}
+                          <Button
+                            className="cursor-pointer"
+                            variant="secondary"
+                            onClick={() => router.push(`/admin/users/${u._id}`)}
+                          >
+                            Ver
+                          </Button>
+                        </td>
+
+                        <td className="p-2 border text-center">
+                          {/* Boton para eliminar usuarios */}
+                          <Button
+                            className="cursor-pointer"
+                            variant="destructive"
+                            onClick={() => {
+                              setUserToDelete(u);
+                              setShowDeleteModal(true);
+                            }}
+                          >
+                            <X />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </CardContent>
         </Card>
       </div>
       {showDeleteModal && userToDelete && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-xl shadow-xl w-[380px] text-center animate-in fade-in zoom-in">
+          <div className="bg-white p-4 md:p-6 rounded-xl shadow-xl w-[calc(100vw-2rem)] max-w-[380px] text-center animate-in fade-in zoom-in">
             <h2 className="text-xl font-bold mb-4">Eliminar usuario</h2>
 
             <p className="text-gray-700 mb-6">
