@@ -13,9 +13,9 @@ export async function GET() {
   const users = await User.find();
 
   for (const user of users) {
-    if (!user.birthday) continue;
+    if (!user.fecnac) continue;
 
-    const bday = new Date(user.birthday);
+    const bday = new Date(user.fecnac);
 
     const isBirthday =
       bday.getDate() === day && bday.getMonth() === month;
