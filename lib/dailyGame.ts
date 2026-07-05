@@ -75,11 +75,11 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Que puede entenderse de varios modos o admitir distintas interpretaciones."
   },
   {
-    "palabra": "Ambigüedad",
-    "definición": "Cualidad de ambiguo, inexactitud o incertidumbre."
+    "palabra": "Vaguedad",
+    "definición": "Falta de precisión, exactitud o claridad en el significado de un término."
   },
   {
-    "palabra": "Anacrónico",
+    "palabra": "Anacronico",
     "definición": "Que no corresponde a la época en la que se sitúa o que parece propio de otro tiempo."
   },
   {
@@ -91,7 +91,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Capacidad o suficiencia para operar competentemente en una determinada actividad."
   },
   {
-    "palabra": "Atónito",
+    "palabra": "Atonito",
     "definición": "Asombrado, estupefacto o desconcertado ante algo extraordinario."
   },
   {
@@ -99,7 +99,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Que es capaz de emprender acciones arriesgadas sin vacilar y mostrando valentía."
   },
   {
-    "palabra": "Autóctono",
+    "palabra": "Autoctono",
     "definición": "Que ha nacido o se ha originado en el mismo lugar donde se encuentra."
   },
   {
@@ -115,7 +115,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Cualidad de la persona que es buena, comprensiva y tolerante."
   },
   {
-    "palabra": "Bifurcación",
+    "palabra": "Bifurcacion",
     "definición": "Lugar o punto en el que algo se divide en dos ramales o caminos."
   },
   {
@@ -127,7 +127,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Abertura o separación que indica una diferencia, interrupción o falta de conexión entre dos cosas."
   },
   {
-    "palabra": "Bucólico",
+    "palabra": "Bucolico",
     "definición": "Que evoca o idealiza la vida en el campo, caracterizada por la paz y la tranquilidad."
   },
   {
@@ -151,7 +151,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Cantidad de agua de una corriente, o conjunto de bienes y riquezas que posee una persona."
   },
   {
-    "palabra": "Célebre",
+    "palabra": "Celebre",
     "definición": "Que es muy conocido y admirado por sus buenas cualidades o logros."
   },
   {
@@ -191,7 +191,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Punto en el que se juntan dos o más corrientes de agua, caminos o eventos."
   },
   {
-    "palabra": "Congénito",
+    "palabra": "Congenito",
     "definición": "Que se manifiesta desde el nacimiento y tiene su origen en el desarrollo embrionario o genético."
   },
   {
@@ -215,7 +215,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Regla o norma conforme a la cual se establece un juicio o se toma una decisión."
   },
   {
-    "palabra": "Críptico",
+    "palabra": "Criptico",
     "definición": "Que es enigmático, oscuro y de difícil comprensión."
   },
   {
@@ -227,11 +227,11 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Gran desastre, ruina o destrucción repentina."
   },
   {
-    "palabra": "Deducción",
+    "palabra": "Deduccion",
     "definición": "Método de razonamiento que consiste en sacar una conclusión particular a partir de principios generales."
   },
   {
-    "palabra": "Déficit",
+    "palabra": "Deficit",
     "definición": "Falta o escasez de algo que se considera necesario, en especial de dinero."
   },
   {
@@ -267,11 +267,11 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Habilidad, agilidad o talento para hacer algo de manera correcta y con facilidad."
   },
   {
-    "palabra": "Dicotomía",
+    "palabra": "Dicotomia",
     "definición": "División en dos partes de una misma cosa, especialmente cuando son contradictorias o excluyentes."
   },
   {
-    "palabra": "Didáctico",
+    "palabra": "Didactico",
     "definición": "Que tiene la intención de enseñar o instruir de manera clara y amena."
   },
   {
@@ -283,7 +283,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Aclarar, explicar o arrojar luz sobre un asunto que resulta confuso."
   },
   {
-    "palabra": "Dinámico",
+    "palabra": "Dinamico",
     "definición": "Que implica movimiento, energía, transformación o constante actividad."
   },
   {
@@ -311,7 +311,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Principio o conjunto de ellos que se establecen como base indiscutible de una creencia o sistema."
   },
   {
-    "palabra": "Efímero",
+    "palabra": "Efimero",
     "definición": "Que dura muy poco tiempo o es pasajero."
   },
   {
@@ -323,11 +323,11 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Poner en claro un asunto misterioso o complicado; aclarar."
   },
   {
-    "palabra": "Empatía",
+    "palabra": "Empatia",
     "definición": "Capacidad de comprender y compartir los sentimientos, pensamientos y emociones de los demás."
   },
   {
-    "palabra": "Empírico",
+    "palabra": "Empirico",
     "definición": "Que se basa en la experiencia, la observación directa y los sentidos, más que en la teoría."
   },
   {
@@ -335,7 +335,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Misterio o cosa que no se puede comprender o que es muy difícil de descifrar."
   },
   {
-    "palabra": "Epílogo",
+    "palabra": "Epilogo",
     "definición": "Sección final de una obra literaria o cinematográfica que sirve para cerrar o dar conclusión a la historia."
   },
   {
@@ -351,15 +351,15 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Actitud de duda o incredulidad generalizada hacia la verdad de las cosas o la capacidad de conocerlas."
   },
   {
-    "palabra": "Esotérico",
+    "palabra": "Esoterico",
     "definición": "Oculto, secreto o de difícil acceso para la mente humana, generalmente asociado a ciencias o doctrinas misteriosas."
   },
   {
-    "palabra": "Espontáneo",
+    "palabra": "Espontaneo",
     "definición": "Que surge de forma natural, sin premeditación o sin haber sido provocado por estímulos externos."
   },
   {
-    "palabra": "Estático",
+    "palabra": "Estatico",
     "definición": "Que permanece en un mismo estado, sin experimentar cambios, movimientos o alteraciones."
   },
   {
@@ -367,7 +367,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Algo extremadamente delicado, ligero o sutil, casi incorpóreo."
   },
   {
-    "palabra": "Etimología",
+    "palabra": "Etimologia",
     "definición": "Estudio del origen de las palabras, de la razón de su existencia, de su significado y de su forma."
   },
   {
@@ -383,7 +383,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Cualidad de ser sobresaliente, de la más alta calidad o tener gran mérito."
   },
   {
-    "palabra": "Excéntrico",
+    "palabra": "Excentrico",
     "definición": "Que se aparta de lo común, habitual o convencional, especialmente en el comportamiento."
   },
   {
@@ -395,7 +395,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Que es muy pequeño, insuficiente o escaso."
   },
   {
-    "palabra": "Exótico",
+    "palabra": "Exotico",
     "definición": "Que es extranjero, inusual, llamativo o que procede de un país o cultura lejana."
   },
   {
@@ -419,7 +419,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Que es raro, peculiar, excesivamente original o fuera de lo común."
   },
   {
-    "palabra": "Efímero",
+    "palabra": "Efimero",
     "definición": "Algo que dura poco tiempo."
   },
   {
@@ -431,7 +431,7 @@ export const PALABRAS: HangmanWord[] = [
     "definición": "Que atrae, cautiva o llama poderosamente la atención por su gran atractivo o interés."
   },
   {
-    "palabra": "Fértil",
+    "palabra": "Fertil",
     "definición": "Que tiene la capacidad de producir o engendrar en abundancia."
   },
   {
